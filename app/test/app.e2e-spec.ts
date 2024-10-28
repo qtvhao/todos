@@ -4,7 +4,7 @@
 // import * as request from 'supertest';
 // import { AppModule } from './../src/app.module';
 // import { io, Socket } from 'socket.io-client';
-// import axios from 'axios';
+import axios from 'axios';
 
 // // npx jest   test/app.e2e-spec.ts
 // describe('Todo App (e2e)', () => {
@@ -104,10 +104,18 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
+  it('/ (GET)', async () => {
+    await axios.post(BASE_URL + '/users/create', { user_id: 'user123', name: 'John Doe', email: 'johndoe@example.com', attributes: { department: 'engineering', role: 'developer' } });
+    let createAccessKey = await axios.post(BASE_URL + '/access-keys/create', { user_id: 'user123', description: 'My new access key' });
+    let {
+      access_key: { access_key_id: accessKeyId, secret_access_key: secretAccessKey },
+    } = createAccessKey.data;
+    console.log(accessKeyId, secretAccessKey);
+    throw new Error('Test Error');
+    const response = await request(app.getHttpServer())
       .get('/')
-      .expect(200)
-      .expect('Hello World!');
+      .expect(200);
+
+    expect(response.text).toBe('Hello World!');
   });
 });
