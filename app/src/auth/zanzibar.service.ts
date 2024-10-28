@@ -4,7 +4,7 @@ import axios from 'axios';
 
 @Injectable()
 export class ZanzibarService {
-  private readonly BASE_URL = 'https://zanzibar-api-url';
+  private readonly BASE_URL = 'http://memory-permissions.system-production:80';
 
   async checkPermission(accessKeyId: string, secretAccessKey: string, permission: string, resource: string): Promise<boolean> {
     try {

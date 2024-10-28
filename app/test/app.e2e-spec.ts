@@ -103,6 +103,7 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+    await app.listen(3000);
   });
 
   it('should create a todo, assign permission, complete it, and receive a notification', async () => {
@@ -125,14 +126,21 @@ describe('AppController (e2e)', () => {
     expect(createResponse.body).toHaveProperty('description', 'This is a test todo');
     expect(createResponse.body).toHaveProperty('completed', false);
     expect(createResponse.body).toHaveProperty('userId', 'user123');
-    clientSocket = io('http://localhost:3000/notifications', { query: { accessKeyId, secretAccessKey }, transports: ['websocket'] });
+    await new Promise((resolve) => {
+      clientSocket = io('http://localhost:3000/', {
+        query: {
+          accessKeyId,
+          secretAccessKey
+        },
+        transports: ['websocket']
+      });
     clientSocket.on('connect', () => {
       console.log('WebSocket client connected');
+        resolve('');
     });
-    clientSocket.on('notification', (message: string) => {
-      expect(message).toBe(`Your todo "Test Todo" is completed!`);
     });
     // 
+    setTimeout(async () => {
     await request(app.getHttpServer())
       .put(`/todos/${createResponse.body.id}/complete`)
       .send({
@@ -140,6 +148,21 @@ describe('AppController (e2e)', () => {
         secretAccessKey,
       })
       .expect(200);
+    }, 100);
+    await new Promise((resolve) => {
+      clientSocket.on('notification', (message: string) => {
+        console.log('Received notification:', message);
+        if (message === `Your todo "Test Todo" is completed!`) {
+          resolve('');
+        }
+      });
+    });
+    console.log('Completed todo');
+  }, 60_000);
+  afterEach(() => {
+    if (clientSocket) {
+      clientSocket.disconnect();
+    }
+    app.close();
   });
-  afterEach(() => { if (clientSocket) { clientSocket.disconnect(); } });
 });

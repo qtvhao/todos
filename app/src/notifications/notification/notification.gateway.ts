@@ -4,11 +4,13 @@ import { Server, Socket } from 'socket.io';
 import { ZanzibarService } from '../../auth/zanzibar.service';
 import { Injectable } from '@nestjs/common';
 
-@Injectable()
-@WebSocketGateway({ namespace: 'notifications' })
+@WebSocketGateway({
+  cors: {
+    origin: '*', // Cho phép tất cả các nguồn gốc (có thể điều chỉnh để bảo mật hơn)
+  },
+})
 export class NotificationGateway implements OnGatewayConnection {
-  @WebSocketServer()
-  server: Server;
+  @WebSocketServer() server: Server;
   private userSockets = new Map<string, Socket>();
 
   constructor(private readonly zanzibarService: ZanzibarService) {}
