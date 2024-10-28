@@ -2,7 +2,9 @@
 import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { ZanzibarService } from '../../auth/zanzibar.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 @WebSocketGateway({ namespace: 'notifications' })
 export class NotificationGateway implements OnGatewayConnection {
   @WebSocketServer()
