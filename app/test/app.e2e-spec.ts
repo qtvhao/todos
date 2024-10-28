@@ -110,12 +110,19 @@ describe('AppController (e2e)', () => {
     let {
       access_key: { access_key_id: accessKeyId, secret_access_key: secretAccessKey },
     } = createAccessKey.data;
-    console.log(accessKeyId, secretAccessKey);
-    throw new Error('Test Error');
-    const response = await request(app.getHttpServer())
-      .get('/')
-      .expect(200);
-
-    expect(response.text).toBe('Hello World!');
+    const createResponse = await request(app.getHttpServer())
+      .post('/todos')
+      .send({
+        accessKeyId,
+        secretAccessKey,
+        title: 'Test Todo',
+        description: 'This is a test todo',
+      })
+      .expect(201);
+    expect(createResponse.body).toHaveProperty('id');
+    expect(createResponse.body).toHaveProperty('title', 'Test Todo');
+    expect(createResponse.body).toHaveProperty('description', 'This is a test todo');
+    expect(createResponse.body).toHaveProperty('completed', false);
+    expect(createResponse.body).toHaveProperty('userId', 'user123');
   });
 });
