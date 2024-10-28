@@ -1,9 +1,35 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+// src/notifications/notification.gateway.ts
+import { WebSocketGateway, WebSocketServer, SubscribeMessage, OnGatewayConnection } from '@nestjs/websockets';
+import { Server, Socket } from 'socket.io';
+import { ZanzibarService } from '../../auth/zanzibar.service';
 
-@WebSocketGateway()
-export class NotificationGateway {
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    return 'Hello world!';
+@WebSocketGateway({ namespace: 'notifications' })
+export class NotificationGateway implements OnGatewayConnection {
+  @WebSocketServer()
+  server: Server;
+  private userSockets = new Map<string, Socket>();
+
+  constructor(private readonly zanzibarService: ZanzibarService) {}
+
+  async handleConnection(client: Socket) {
+    const { accessKeyId, secretAccessKey } = client.handshake.query;
+
+    const userId = await this.zanzibarService.getUserFromAccessKey(
+      accessKeyId as string,
+      secretAccessKey as string,
+    );
+
+    if (userId) {
+      this.userSockets.set(userId, client);
+    } else {
+      client.disconnect(true);
+    }
+  }
+
+  notifyUser(userId: string, message: string) {
+    const client = this.userSockets.get(userId);
+    if (client) {
+      client.emit('notification', message);
+    }
   }
 }
