@@ -28,7 +28,7 @@ import axios from 'axios';
 //     const BASE_URL = '';
 //     await axios.post(BASE_URL + '/users/create', { user_id: 'user123', name: 'John Doe', email: 'johndoe@example.com', attributes: { department: 'engineering', role: 'developer' } });
 
-    
+
 //     let createAccessKey = await axios.post(BASE_URL + '/access-keys/create', { user_id: 'user123', description: 'My new access key' });
 //     let {
 //       access_key: { access_key_id: accessKeyId, secret_access_key: secretAccessKey },
@@ -134,20 +134,20 @@ describe('AppController (e2e)', () => {
         },
         transports: ['websocket']
       });
-    clientSocket.on('connect', () => {
-      console.log('WebSocket client connected');
+      clientSocket.on('connect', () => {
+        console.log('WebSocket client connected');
         resolve('');
-    });
+      });
     });
     // 
     setTimeout(async () => {
-    await request(app.getHttpServer())
-      .put(`/todos/${createResponse.body.id}/complete`)
-      .send({
-        accessKeyId,
-        secretAccessKey,
-      })
-      .expect(200);
+      await request(app.getHttpServer())
+        .put(`/todos/${createResponse.body.id}/complete`)
+        .send({
+          accessKeyId,
+          secretAccessKey,
+        })
+        .expect(200);
     }, 100);
     await new Promise((resolve) => {
       clientSocket.on('notification', (message: string) => {
