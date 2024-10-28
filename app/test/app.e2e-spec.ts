@@ -3,7 +3,7 @@
 // import { INestApplication } from '@nestjs/common';
 // import * as request from 'supertest';
 // import { AppModule } from './../src/app.module';
-// import { io, Socket } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import axios from 'axios';
 
 // // npx jest   test/app.e2e-spec.ts
@@ -94,6 +94,7 @@ import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let clientSocket: Socket;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -104,7 +105,7 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', async () => {
+  it('should create a todo, assign permission, complete it, and receive a notification', async () => {
     await axios.post(BASE_URL + '/users/create', { user_id: 'user123', name: 'John Doe', email: 'johndoe@example.com', attributes: { department: 'engineering', role: 'developer' } });
     let createAccessKey = await axios.post(BASE_URL + '/access-keys/create', { user_id: 'user123', description: 'My new access key' });
     let {
@@ -124,5 +125,21 @@ describe('AppController (e2e)', () => {
     expect(createResponse.body).toHaveProperty('description', 'This is a test todo');
     expect(createResponse.body).toHaveProperty('completed', false);
     expect(createResponse.body).toHaveProperty('userId', 'user123');
+    clientSocket = io('http://localhost:3000/notifications', { query: { accessKeyId, secretAccessKey }, transports: ['websocket'] });
+    clientSocket.on('connect', () => {
+      console.log('WebSocket client connected');
+    });
+    clientSocket.on('notification', (message: string) => {
+      expect(message).toBe(`Your todo "Test Todo" is completed!`);
+    });
+    // 
+    await request(app.getHttpServer())
+      .put(`/todos/${createResponse.body.id}/complete`)
+      .send({
+        accessKeyId,
+        secretAccessKey,
+      })
+      .expect(200);
   });
+  afterEach(() => { if (clientSocket) { clientSocket.disconnect(); } });
 });
