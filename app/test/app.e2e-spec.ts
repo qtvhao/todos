@@ -4,6 +4,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { io, Socket } from 'socket.io-client';
+import axios from 'axios';
 
 // npx jest   test/app.e2e-spec.ts
 describe('Todo App (e2e)', () => {
@@ -24,9 +25,15 @@ describe('Todo App (e2e)', () => {
   });
 
   it('should create a todo, assign permission, complete it, and receive a notification', async (done) => {
-    // Define the access keys (these are mock values)
-    const accessKeyId = 'test-access-key';
-    const secretAccessKey = 'test-secret-key';
+    const BASE_URL = '';
+    await axios.post(BASE_URL + '/users/create', { user_id: 'user123', name: 'John Doe', email: 'johndoe@example.com', attributes: { department: 'engineering', role: 'developer' } });
+
+    
+    let createAccessKey = await axios.post(BASE_URL + '/access-keys/create', { user_id: 'user123', description: 'My new access key' });
+    let {
+      access_key: { access_key_id: accessKeyId, secret_access_key: secretAccessKey },
+    } = createAccessKey.data;
+    // console.log(access_key_id, secret_access_key);
 
     // Step 1: Create a new Todo
     const createResponse = await request(app.getHttpServer())
@@ -44,6 +51,7 @@ describe('Todo App (e2e)', () => {
     expect(todo).toHaveProperty('title', 'Test Todo');
     expect(todo).toHaveProperty('description', 'This is a test todo');
     expect(todo).toHaveProperty('completed', false);
+    throw new Error('Test Error');
 
     // Step 2: Connect WebSocket client and listen for notifications
     clientSocket = io('http://localhost:3000/notifications', {
@@ -71,7 +79,7 @@ describe('Todo App (e2e)', () => {
         secretAccessKey,
       })
       .expect(200);
-  });
+  }, 60_000);
 
   afterEach(() => {
     if (clientSocket) {
