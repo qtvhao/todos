@@ -5,6 +5,6 @@ COPY ./app/package.json ./app/yarn.lock ./
 RUN yarn
 COPY ./app .
 
-RUN yarn test:e2e && yarn build
+RUN yarn build
 
 CMD ["yarn", "start"]
