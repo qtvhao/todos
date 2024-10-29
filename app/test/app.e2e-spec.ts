@@ -136,24 +136,27 @@ describe('AppController (e2e)', () => {
         })
         .expect(200);
     }, 100);
-    await new Promise((resolve) => {
-      console.log('Waiting for notifications from clientSocket');
+    const [notification1, notification2] = await Promise.all([
+      new Promise((resolve) => {
+      console.log('clientSocket will receive notification');
+      const timeout = setTimeout(() => resolve(false), 5000);
       clientSocket.on('notification', (message: string) => {
-        console.log('Received notification from clientSocket:', message);
-        if (message === `Your todo "Test Todo" is completed!`) {
-          resolve('');
-        }
+        clearTimeout(timeout);
+        resolve(message);
       });
-    });
-    await new Promise((resolve) => {
-      console.log('Waiting for notifications from clientSocket2');
+      }),
+      new Promise((resolve) => {
+      console.log('clientSocket2 will not receive notification');
+      const timeout = setTimeout(() => resolve(false), 5000);
       clientSocket2.on('notification', (message: string) => {
-        console.log('Received notification from clientSocket2:', message);
-        if (message === `Your todo "Test Todo" is completed!`) {
-          resolve('');
-        }
+        clearTimeout(timeout);
+        resolve(message);
       });
-    });
+      })
+    ]);
+
+    expect(notification1).toBe(`Your todo "Test Todo" is completed!`);
+    expect(notification2).toBe(false);
   }, 60_000);
   afterEach(() => {
     if (clientSocket) {
