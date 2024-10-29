@@ -3,30 +3,40 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { ZanzibarService } from '../auth/zanzibar.service';
 import { NotificationGateway } from '../notifications/notification/notification.gateway';
+import { QueueService } from '../queue/queue.service';
+import { Processor, OnQueueCompleted } from '@nestjs/bull';
 
+const BULL_QUEUE_NAME = process.env.BULL_QUEUE_NAME || 'queue';
 @Injectable()
+@Processor(BULL_QUEUE_NAME)
 export class TodosService {
   private todos: Todo[] = [];
 
   constructor(
+    private readonly queueService: QueueService,
     private readonly zanzibarService: ZanzibarService,
     private readonly notificationGateway: NotificationGateway,
   ) {}
 
+
+
+  @OnQueueCompleted()
+  async onCompleted(job: any) {
+      console.log('Job completed with result', job.returnvalue);
+  }
   async createTodo(
     accessKeyId: string,
     secretAccessKey: string,
-    title: string,
-    description: string,
+    jobData: any,
   ): Promise<Todo | null> {
     const userId = await this.zanzibarService.getUserFromAccessKey(accessKeyId, secretAccessKey);
 
     if (!userId) throw new Error('Invalid access keys');
 
+    let job = await this.queueService.addJob(jobData);
     const todo: Todo = {
       id: Date.now().toString(),
-      title,
-      description,
+      job_id: job.id,
       completed: false,
       userId,
     };
@@ -53,7 +63,7 @@ export class TodosService {
 
     todo.completed = true;
 
-    this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.title}" is completed!`);
+    this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is completed!`);
     return todo;
   }
 }

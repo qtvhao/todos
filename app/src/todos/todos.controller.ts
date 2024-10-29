@@ -16,8 +16,10 @@ export class TodosController {
     return this.todosService.createTodo(
       accessKeyId,
       secretAccessKey,
-      title,
-      description,
+      {
+        title,
+        description,
+      }
     );
   }
 

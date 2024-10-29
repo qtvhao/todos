@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Processor, Process } from '@nestjs/bull';
+import { Processor, Process, OnQueueCompleted } from '@nestjs/bull';
 
+const BULL_QUEUE_NAME = process.env.BULL_QUEUE_NAME || 'queue';
 @Injectable()
-@Processor('queue')
+@Processor(BULL_QUEUE_NAME)
 
 export class QueueProcessor {
-    @Process('process')
+    @Process()
     async process(job: any) {
         console.log('Processing job', job.id);
+        let jobData = job.data;
+        console.log('Job data:', jobData);
         return job.data;
     }
 }
