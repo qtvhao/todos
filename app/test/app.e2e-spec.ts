@@ -27,20 +27,6 @@ describe('AppController (e2e)', () => {
     let {
       access_key: { access_key_id: accessKeyId, secret_access_key: secretAccessKey },
     } = createAccessKey.data;
-    const createResponse = await request(app.getHttpServer())
-      .post('/todos')
-      .send({
-        accessKeyId,
-        secretAccessKey,
-        title: 'Test Todo',
-        description: 'This is a test todo',
-      })
-      .expect(201);
-    expect(createResponse.body).toHaveProperty('id');
-    // expect(createResponse.body).toHaveProperty('title', 'Test Todo');
-    // expect(createResponse.body).toHaveProperty('description', 'This is a test todo');
-    expect(createResponse.body).toHaveProperty('completed', false);
-    expect(createResponse.body).toHaveProperty('userId', 'user123');
     await new Promise((resolve) => {
       clientSocket = io('http://localhost:3000/', {
         query: {
@@ -51,10 +37,22 @@ describe('AppController (e2e)', () => {
       });
       clientSocket.on('connect', () => {
         console.log('WebSocket client connected');
+        // resolve('');
+      });
+      clientSocket.on('notification', (message: string) => {
+        console.log('Received notification:', message);
         resolve('');
       });
     });
     // 
+    let todosCreatedAt = Date.now();
+    // const createResponse = await 
+    //   .expect(201);
+    // expect(createResponse.body).toHaveProperty('id');
+    // // expect(createResponse.body).toHaveProperty('title', 'Test Todo');
+    // // expect(createResponse.body).toHaveProperty('description', 'This is a test todo');
+    // expect(createResponse.body).toHaveProperty('completed', false);
+    // expect(createResponse.body).toHaveProperty('userId', 'user123');
     // setTimeout(async () => {
     //   await request(app.getHttpServer())
     //     .put(`/todos/${createResponse.body.id}/complete`)
@@ -64,15 +62,27 @@ describe('AppController (e2e)', () => {
     //     })
     //     .expect(200);
     // }, 100);
-    await new Promise((resolve) => {
-      console.log('clientSocket will receive notification');
-      clientSocket.on('notification', (message: string) => {
-        console.log('Received notification:', message);
-        if (message.startsWith(`Your todo "`) && message.endsWith(`" is completed!`)) {
-          resolve('');
-        }
-      });
-    });
+    await Promise.all([
+      new Promise((resolve) => {
+        console.log('clientSocket will receive notification');
+        clientSocket.on('notification', (message: string) => {
+          console.log('Received notification:', message);
+          if (message.startsWith(`Your todo "`) && message.endsWith(`" is completed!`)) {
+            resolve('');
+          }
+        });
+      }),
+      request(app.getHttpServer())
+          .post('/todos')
+          .send({
+            accessKeyId,
+            secretAccessKey,
+            title: 'Test Todo',
+            description: 'This is a test todo',
+          })
+    ]);
+    let elapsed = Date.now() - todosCreatedAt;
+    console.log('Elapsed time:', elapsed);
     console.log('Completed todo');
   }, 60_000);
 

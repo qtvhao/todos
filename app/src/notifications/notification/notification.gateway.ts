@@ -25,6 +25,7 @@ export class NotificationGateway implements OnGatewayConnection {
 
     if (userId) {
       this.userSockets.set(userId, client);
+      this.notifyUser(userId, 'You are now connected.');
     } else {
       client.disconnect(true);
     }

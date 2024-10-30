@@ -22,8 +22,14 @@ export class TodosService {
 
   @OnQueueCompleted()
   async onCompleted(job: any) {
-      console.log('Job completed with result', job.returnvalue);
+      // console.log('Job completed with result', job.returnvalue);
+      const todo = this.todos.find((t) => t.job_id === job.id);
+      if (todo) {
+        // console.log('Todo:', todo);
+        this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is completed!`);
+      }
   }
+
   async createTodo(
     accessKeyId: string,
     secretAccessKey: string,
