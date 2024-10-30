@@ -9,6 +9,6 @@ export class QueueService {
     constructor( @InjectQueue(BULL_QUEUE_NAME) private readonly queue: any) {}
     async addJob(jobData: any) {
         console.log('Creating todo with job data:', jobData, 'in queue:', this.queue.name);
-        return this.queue.add(jobData);
+        return await this.queue.add(jobData);
     }
 }
