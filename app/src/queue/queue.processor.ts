@@ -3,7 +3,7 @@ import { Processor, Process, OnQueueCompleted } from '@nestjs/bull';
 
 const BULL_QUEUE_NAME = process.env.BULL_QUEUE_NAME || 'queue';
 @Injectable()
-@Processor(BULL_QUEUE_NAME)
+@Processor('BULL_QUEUE_NAME')
 
 export class QueueProcessor {
     @Process()
