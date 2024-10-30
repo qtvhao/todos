@@ -3,10 +3,10 @@ import { Processor, Process, OnQueueCompleted } from '@nestjs/bull';
 
 const BULL_QUEUE_NAME = process.env.BULL_QUEUE_NAME || 'queue';
 @Injectable()
-@Processor('BULL_QUEUE_NAME')
+@Processor(BULL_QUEUE_NAME)
 
 export class QueueProcessor {
-    @Process()
+    // @Process()
     async process(job: any) {
         // await new Promise((resolve) => setTimeout(resolve, 1_000));
         // console.log('Processing job', job.id);
