@@ -34,6 +34,7 @@ export class NotificationGateway implements OnGatewayConnection {
   notifyUser(userId: string, message: string) {
     const client = this.userSockets.get(userId);
     if (client) {
+      console.log('Notifying user:', userId, message);
       client.emit('notification', message);
     }
   }
