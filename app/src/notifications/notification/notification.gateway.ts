@@ -11,7 +11,7 @@ import { Injectable } from '@nestjs/common';
 })
 export class NotificationGateway implements OnGatewayConnection {
   @WebSocketServer() server: Server;
-  private userSockets = new Map<string, Socket>();
+  private userSockets = new Map<string, Socket[]>();
 
   constructor(private readonly zanzibarService: ZanzibarService) {}
 
@@ -24,7 +24,14 @@ export class NotificationGateway implements OnGatewayConnection {
     );
 
     if (userId) {
-      this.userSockets.set(userId, client);
+      let sockets: Socket[];
+      if (this.userSockets.has(userId)) {
+        sockets = this.userSockets.get(userId);
+        sockets.push(client);
+      }else{
+        sockets = [client];
+      }
+      this.userSockets.set(userId, sockets);
       this.notifyUser(userId, 'You are now connected.');
     } else {
       client.disconnect(true);
@@ -32,10 +39,12 @@ export class NotificationGateway implements OnGatewayConnection {
   }
 
   notifyUser(userId: string, message: string) {
-    const client = this.userSockets.get(userId);
-    if (client) {
+    if (this.userSockets.has(userId)) {
+      const clients = this.userSockets.get(userId);
       console.log('Notifying user:', userId, message);
-      client.emit('notification', message);
+      clients.forEach((client) => {
+        client.emit('notification', message);
+      });
     }
   }
 }
