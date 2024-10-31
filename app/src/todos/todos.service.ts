@@ -42,7 +42,7 @@ export class TodosService {
     let job = await this.queueService.addJob(jobData);
     const todo: Todo = {
       id: Date.now().toString(),
-      job_id: job.id,
+      job_id: Number(job.id),
       completed: false,
       userId,
     };
