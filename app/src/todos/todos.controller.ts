@@ -7,14 +7,14 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Post()
-  createTodo(
+  async createTodo(
     @Body('accessKeyId') accessKeyId: string,
     @Body('secretAccessKey') secretAccessKey: string,
     @Body('title') title: string,
     @Body('description') description: string,
   ) {
     console.log('Creating todo with title:', title);
-    return this.todosService.createTodo(
+    return await this.todosService.createTodo(
       accessKeyId,
       secretAccessKey,
       {

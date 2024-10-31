@@ -39,7 +39,7 @@ export class TodosService {
     accessKeyId: string,
     secretAccessKey: string,
     jobData: any,
-  ): Promise<Todo | null> {
+  ): Promise<Todo> {
     const userId = await this.zanzibarService.getUserFromAccessKey(accessKeyId, secretAccessKey);
     console.log('User ID:', userId);
 
