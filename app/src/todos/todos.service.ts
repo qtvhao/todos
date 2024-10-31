@@ -26,7 +26,7 @@ export class TodosService {
       return { result: 'success' };
   }
   onCompleted(job: any, queue: Queue) {
-      console.log('Job completed with result', job.returnvalue, 'from queue', queue.name);
+      console.log('Job completed ', job, 'from queue', queue.name);
       const todo = this.todos.find((t) => t.job_id === Number(job.id));
       console.log('Todo:', todo);
       if (todo) {
