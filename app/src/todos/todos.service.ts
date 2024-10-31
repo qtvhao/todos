@@ -54,7 +54,12 @@ export class TodosService {
     };
     console.log('Created todo:', todo);
 
-    this.todos.push(todo);
+    const todos = this.todos;
+    todos.push(todo);
+    this.todos = todos;
+    if (!this.todos.find((t) => t.job_id === Number(job.id))) {
+      throw new Error('Failed to create todo');
+    }
     await this.zanzibarService.assignPermission(userId, 'read', todo.id);
 
     return todo;
