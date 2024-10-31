@@ -13,6 +13,7 @@ export class TodosController {
     @Body('title') title: string,
     @Body('description') description: string,
   ) {
+    console.log('Creating todo with title:', title);
     return this.todosService.createTodo(
       accessKeyId,
       secretAccessKey,

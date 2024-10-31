@@ -41,6 +41,7 @@ export class TodosService {
     jobData: any,
   ): Promise<Todo | null> {
     const userId = await this.zanzibarService.getUserFromAccessKey(accessKeyId, secretAccessKey);
+    console.log('User ID:', userId);
 
     if (!userId) throw new Error('Invalid access keys');
 
