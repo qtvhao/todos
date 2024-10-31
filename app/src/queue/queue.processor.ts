@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { Processor, Process, OnQueueCompleted } from '@nestjs/bull';
-
-const BULL_QUEUE_NAME = process.env.BULL_QUEUE_NAME || 'queue';
-const BULL_QUEUE_NAMES = BULL_QUEUE_NAME.split(',');
+import { Queue } from 'bull';
 @Injectable()
-@Processor(BULL_QUEUE_NAMES[0])
-
 export class QueueProcessor {
-    // @Process()
+    constructor(private readonly queues: Queue[]) {
+        if (this.queues.length === 0) {
+            throw new Error('No queues have been initialized');
+        }
+        console.log('QueueProcessor initialized with queues:', this.queues.map((q) => q.name));
+        this.queues.forEach((queue) => { queue.on('completed', (job) => this.onCompleted(job)); });
+        // this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
+    }
     async process(job: any) {
-        // await new Promise((resolve) => setTimeout(resolve, 1_000));
-        // console.log('Processing job', job.id);
-        let jobData = job.data;
-        console.log('Job data:', jobData);
-        return job.data;
+        console.log('Processing job:', job.data);
+        return { result: 'success' };
+    }
+    onCompleted(job: any) {
+        console.log('Job completed with result', job.returnvalue);
     }
 }

@@ -84,7 +84,7 @@ describe('AppController (e2e)', () => {
     let elapsed = Date.now() - todosCreatedAt;
     console.log('Elapsed time:', elapsed);
     console.log('Completed todo');
-  }, 60_000);
+  }, 10_000);
 
   // To run this test: yarn test:e2e app/test/app.e2e-spec.ts -t='should create two users, create two access keys, create a todo, and receive notifications'
   it('should create two users, create two access keys, create a todo, and receive notifications', async () => {
