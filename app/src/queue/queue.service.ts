@@ -8,6 +8,9 @@ export class QueueService {
       throw new Error('No queues have been initialized');
     }
   }
+  getQueues() {
+    return this.queues;
+  }
 
   private djb2Code(str: string) {
     let hash = 5381;

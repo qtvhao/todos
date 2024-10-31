@@ -26,11 +26,6 @@ if (!REDIS_PASSWORD) {
   ],
   providers: [
     {
-      provide: QueueProcessor,
-      useFactory: (...queues: Queue[]) => new QueueProcessor(queues),
-      inject: BULL_QUEUE_NAMES.map(queueName => `BullQueue_${queueName}`),
-    },
-    {
       provide: QueueService,
       useFactory: (...queues: Queue[]) => new QueueService(queues),
       inject: BULL_QUEUE_NAMES.map(queueName => `BullQueue_${queueName}`),

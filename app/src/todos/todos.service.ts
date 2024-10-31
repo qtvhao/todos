@@ -1,32 +1,34 @@
-// src/todos/todos.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { ZanzibarService } from '../auth/zanzibar.service';
 import { NotificationGateway } from '../notifications/notification/notification.gateway';
 import { QueueService } from '../queue/queue.service';
-import { Processor, OnQueueCompleted } from '@nestjs/bull';
+import { Queue } from 'bull';
 
-const BULL_QUEUE_NAME = process.env.BULL_QUEUE_NAME || 'queue';
-const BULL_QUEUE_NAMES = BULL_QUEUE_NAME.split(',');
 @Injectable()
-@Processor(BULL_QUEUE_NAMES[0])
 export class TodosService {
   private todos: Todo[] = [];
+  private queues: Queue[];
 
   constructor(
     private readonly queueService: QueueService,
     private readonly zanzibarService: ZanzibarService,
     private readonly notificationGateway: NotificationGateway,
-  ) {}
+  ) {
+    this.queues = this.queueService.getQueues();
+    this.queues.forEach((queue) => { queue.on('completed', (job) => this.onCompleted(job, queue)); });
+    this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
+    console.log('QueueProcessor initialized with queues:', this.queues.map((q) => q.name));
+  }
 
-
-
-  @OnQueueCompleted()
-  async onCompleted(job: any) {
-      // console.log('Job completed with result', job.returnvalue);
+  async process(job: any) {
+      console.log('Processing job:', job.data);
+      return { result: 'success' };
+  }
+  onCompleted(job: any, queue: Queue) {
+      console.log('Job completed with result', job.returnvalue, 'from queue', queue.name);
       const todo = this.todos.find((t) => t.job_id === Number(job.id));
       if (todo) {
-        // console.log('Todo:', todo);
         this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is completed!`);
       }
   }
