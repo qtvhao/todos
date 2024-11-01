@@ -1,4 +1,5 @@
 import { Controller, Get, Post } from '@nestjs/common';
+import { Body } from '@nestjs/common';
 
 @Controller('messages')
 export class MessagesController {
@@ -17,13 +18,13 @@ export class MessagesController {
     }
 
     @Post()
-    create(): object {
+    create(@Body() body: { sender: string, text: string, threadId: string }): object {
         const message = {
-            "id": 5,
-            "sender": "Alice",
-            "text": "I'm new here",
-            "timestamp": "2023-10-01T10:05:00Z",
-            "threadId": "General"
+            "id": this.messages.length + 1,
+            "sender": body.sender,
+            "text": body.text,
+            "timestamp": new Date().toISOString(),
+            "threadId": body.threadId
         };
         this.messages.push(message);
 
