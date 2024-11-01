@@ -8,10 +8,10 @@ export const MessageProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const loadMessages = async () => {
-      // const data = await fetchMessages();
-      // setMessages(data);
-    };
+    // const loadMessages = async () => {
+    //   const data = await fetchMessages();
+    //   setMessages(data);
+    // };
     // loadMessages();
   }, []);
 
