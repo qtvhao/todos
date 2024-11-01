@@ -2,14 +2,16 @@
 import React, { useContext } from 'react';
 import MessageList from './MessageList';
 import MessageForm from './MessageForm';
+import LogoutButton from './LogoutButton';
 import { MessageContext } from '../../context/MessageContext';
 
 const RightPanel = () => {
-  const { threads, activeThread, addMessageToThread } = useContext(MessageContext);
-  const messages = threads[activeThread] || [];
+  const { activeThread, addMessageToThread } = useContext(MessageContext);
+  const { messages } = useContext(MessageContext);
 
   return (
     <div className="right-panel">
+      <LogoutButton />
       <MessageList messages={messages} />
       <MessageForm threadId={activeThread} addMessageToThread={addMessageToThread} />
     </div>

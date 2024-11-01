@@ -1,11 +1,19 @@
 // src/components/App/App.js
-import React from 'react';
 import { MessageProvider } from '../../context/MessageContext';
 import LeftSidebar from '../LeftSidebar/LeftSidebar';
 import RightPanel from '../RightPanel/RightPanel';
+import React, { useContext } from 'react';
+import { AuthProvider, AuthContext } from '../../context/AuthContext';
+import Login from '../Login/Login';
 import './App.css';
 
-function App() {
+const AppContent = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+
+  if (!isAuthenticated) {
+    return <Login />;
+  }
+
   return (
     <MessageProvider>
       <div className="app-container">
@@ -13,6 +21,14 @@ function App() {
         <RightPanel />
       </div>
     </MessageProvider>
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
