@@ -13,3 +13,8 @@
     margin-left: 10px;
     padding: 5px 10px;
   }
+
+  .curl-command {
+    display: flex;
+    padding: 10px;
+  }

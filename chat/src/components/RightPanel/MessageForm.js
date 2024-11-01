@@ -5,7 +5,7 @@ import './MessageForm.css';
 
 import { useMessages } from '../../context/MessageContext';
 const MessageForm = () => {
-  const { message, handleChange, handleSend, resetForm } = useMessageForm();
+  const { message, handleChange, dataBinary, handleSend, resetForm } = useMessageForm();
   const { doFetchMessages, activeThreadId } = useMessages();
 
   const onSubmit = async (e) => {
@@ -18,15 +18,25 @@ const MessageForm = () => {
   };
 
   return (
-    <form className="message-form" onSubmit={onSubmit}>
-      <input
-        type="text"
-        placeholder="Type your message"
-        value={message}
-        onChange={handleChange}
-      />
-      <button type="submit">Send</button>
-    </form>
+    <div>
+      <small>
+        <pre className="curl-command">
+          curl 'https://http-generate-partnerapis-production-80.schnworks.com/todos' \ <br />
+          -X 'POST' \ <br />
+          -H 'Content-Type: application/json' \ <br />
+          --data-binary '{dataBinary}'
+        </pre>
+      </small>
+      <form className="message-form" onSubmit={onSubmit}>
+        <input
+          type="text"
+          placeholder="Type your message"
+          value={message}
+          onChange={handleChange}
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
   );
 };
 
