@@ -12,21 +12,24 @@ export const MessageProvider = ({ children }) => {
 
   useEffect(() => {
     if (auth) {
-      fetchMessages().then((data) => {
-        setMessages(data);
-        // Set initial active thread to the first thread found in messages
-        if (data.length > 0) setActiveThreadId(data[0].threadId);
-      });
+      doFetchMessages();
     }
   }, [auth]);
 
   const changeThread = (threadId) => {
     setActiveThreadId(threadId);
   };
+  const doFetchMessages = async () => {
+    fetchMessages().then((data) => {
+      setMessages(data);
+      // Set initial active thread to the first thread found in messages
+      if (data.length > 0) setActiveThreadId(data[0].threadId);
+    });
+  };
 
   return (
     <MessageContext.Provider
-      value={{ messages: messages, setMessages, activeThreadId, changeThread }}
+      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages }}
     >
       {children}
     </MessageContext.Provider>

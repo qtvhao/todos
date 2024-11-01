@@ -1,15 +1,19 @@
 // src/components/RightPanel/MessageForm.js
 import React from 'react';
 import useMessageForm from './hooks/useMessageForm';
-import { sendMessage } from '../../api/api';
 import './MessageForm.css';
 
+import { useMessages } from '../../context/MessageContext';
 const MessageForm = () => {
   const { message, handleChange, handleSend, resetForm } = useMessageForm();
+  const { doFetchMessages } = useMessages();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await sendMessage({ text: message });
+    await handleSend({ text: message });
+    doFetchMessages();
+
+    // Reset the form after sending the message
     resetForm(); // Clear the input after sending
   };
 
