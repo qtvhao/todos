@@ -19,9 +19,11 @@ export class TodosService {
   ) {
     this.queues = this.queueService.getQueues();
     this.queues.forEach((queue) => {
-      queue.on('completed', (job) => {
-        console.log('A job has been completed');
-        this.onCompleted(job, queue);
+      queue.on('global:completed', (jobId, returnValue, status) => {
+        console.log('A job has been completed', [jobId, returnValue, status]);
+        queue.getJob(jobId).then((job) => {
+          this.onCompleted(job, queue);
+        });
       });
     });
     this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
