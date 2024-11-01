@@ -5,7 +5,7 @@ export const fetchMessages = async () => {
   const response = await fetch(`${API_URL}/messages`);
   const data = await response.json();
 
-  return data;
+  return data.messages;
 };
 
 export const sendMessage = async (message) => {

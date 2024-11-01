@@ -10,10 +10,10 @@ export const MessageProvider = ({ children }) => {
 
   useEffect(() => {
     const loadMessages = async () => {
-      const data = await fetchMessages();
+      const messages = await fetchMessages();
       
       // Group messages by thread
-      const groupedThreads = data.reduce((acc, message) => {
+      const groupedThreads = messages.reduce((acc, message) => {
         const { threadId } = message;
         if (!acc[threadId]) {
           acc[threadId] = [];
