@@ -1,21 +1,25 @@
 // src/components/RightPanel/MessageForm.js
 import React from 'react';
-import { sendMessage } from '../../api/api';
 import useMessageForm from './hooks/useMessageForm';
+import { sendMessage } from '../../api/api';
+import './MessageForm.css';
 
-const MessageForm = ({ threadId, addMessageToThread }) => {
-  const { message, setMessage, handleSubmit } = useMessageForm(async (msg) => {
-    const newMessage = await sendMessage(msg);
-    addMessageToThread(threadId, { ...newMessage, threadId });
-  });
+const MessageForm = () => {
+  const { message, handleChange, handleSend, resetForm } = useMessageForm();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    await sendMessage({ text: message });
+    resetForm(); // Clear the input after sending
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="message-form">
+    <form className="message-form" onSubmit={onSubmit}>
       <input
         type="text"
+        placeholder="Type your message"
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type a message"
+        onChange={handleChange}
       />
       <button type="submit">Send</button>
     </form>

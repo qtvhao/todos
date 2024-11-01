@@ -1,33 +1,13 @@
 // src/api/api.js
-import { API_URL } from '../constants';
-import Cookies from 'js-cookie';
-
-const getAuthHeaders = () => {
-  const accessKeyId = Cookies.get('accessKeyId');
-  const secretAccessKey = Cookies.get('secretAccessKey');
-  return {
-    'X-Access-Key-Id': accessKeyId,
-    'X-Secret-Access-Key': secretAccessKey,
-  };
-};
+import axios from 'axios';
+import { FETCH_MESSAGES_ENDPOINT, SEND_MESSAGE_ENDPOINT } from '../constants';
 
 export const fetchMessages = async () => {
-  const response = await fetch(`${API_URL}/messages`, {
-    headers: getAuthHeaders(),
-  });
-  const data = await response.json();
-
-  return data.messages;
+  const response = await axios.get(FETCH_MESSAGES_ENDPOINT);
+  return response.data.messages;
 };
 
 export const sendMessage = async (message) => {
-  const response = await fetch(`${API_URL}/messages`, {
-    method: 'POST',
-    headers: {
-      ...getAuthHeaders(),
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ text: message }),
-  });
-  return response.json();
+  const response = await axios.post(SEND_MESSAGE_ENDPOINT, { message });
+  return response.data;
 };

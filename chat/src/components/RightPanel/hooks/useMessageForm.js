@@ -1,16 +1,17 @@
 // src/components/RightPanel/hooks/useMessageForm.js
 import { useState } from 'react';
 
-const useMessageForm = (sendMessageCallback) => {
+const useMessageForm = () => {
   const [message, setMessage] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    sendMessageCallback(message);
-    setMessage('');
+  const handleChange = (e) => setMessage(e.target.value);
+  const resetForm = () => setMessage('');
+  
+  return {
+    message,
+    handleChange,
+    resetForm,
   };
-
-  return { message, setMessage, handleSubmit };
 };
 
 export default useMessageForm;

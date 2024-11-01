@@ -1,22 +1,36 @@
 // src/components/LeftSidebar/LeftSidebar.js
-import React, { useContext } from 'react';
-import { MessageContext } from '../../context/MessageContext';
+import React, { useMemo } from 'react';
+import { useMessages } from '../../context/MessageContext';
 import ThreadItem from './ThreadItem';
+import './LeftSidebar.css';
 
 const LeftSidebar = () => {
-  const { threads, activeThread, setActiveThread } = useContext(MessageContext);
+  const { messages, activeThreadId, changeThread } = useMessages();
+
+  // Group messages by threadId to display a list of threads
+  const threads = useMemo(() => {
+    const threadMap = {};
+    messages.forEach((msg) => {
+      if (!threadMap[msg.threadId]) {
+        threadMap[msg.threadId] = { id: msg.threadId, name: `Thread ${msg.threadId}` };
+      }
+    });
+    return Object.values(threadMap);
+  }, [messages]);
 
   return (
     <div className="left-sidebar">
-      <h3>Conversations</h3>
-      {Object.keys(threads).map((threadId) => (
-        <ThreadItem
-          key={threadId}
-          threadId={threadId}
-          active={threadId === activeThread}
-          onClick={() => setActiveThread(threadId)}
-        />
-      ))}
+      <h2>Chats</h2>
+      <div className="thread-list">
+        {threads.map((thread) => (
+          <ThreadItem
+            key={thread.id}
+            thread={thread}
+            isActive={thread.id === activeThreadId}
+            onClick={() => changeThread(thread.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 };

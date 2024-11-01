@@ -1,34 +1,31 @@
-import React, { createContext, useState, useEffect } from 'react';
+// src/context/AuthContext.js
+import React, { createContext, useState, useContext } from 'react';
 import Cookies from 'js-cookie';
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const accessKeyId = Cookies.get('accessKeyId');
-    const secretAccessKey = Cookies.get('secretAccessKey');
-    if (accessKeyId && secretAccessKey) {
-      setIsAuthenticated(true);
-    }
-  }, []);
+  const [auth, setAuth] = useState(() => {
+    const token = Cookies.get('token');
+    return token ? { token } : null;
+  });
 
   const login = (accessKeyId, secretAccessKey) => {
-    Cookies.set('accessKeyId', accessKeyId);
-    Cookies.set('secretAccessKey', secretAccessKey);
-    setIsAuthenticated(true);
+    const token = `${accessKeyId}:${secretAccessKey}`; // Mock token, replace with real token generation
+    Cookies.set('token', token);
+    setAuth({ token });
   };
 
   const logout = () => {
-    Cookies.remove('accessKeyId');
-    Cookies.remove('secretAccessKey');
-    setIsAuthenticated(false);
+    Cookies.remove('token');
+    setAuth(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ auth, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

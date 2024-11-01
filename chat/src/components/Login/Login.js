@@ -1,8 +1,10 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../context/AuthContext';
+// src/components/Login/Login.js
+import React, { useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import './Login.css';
 
 const Login = () => {
-  const { login } = useContext(AuthContext);
+  const { login } = useAuth();
   const [accessKeyId, setAccessKeyId] = useState('');
   const [secretAccessKey, setSecretAccessKey] = useState('');
 
@@ -13,26 +15,20 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Access Key ID:</label>
-          <input
-            type="text"
-            value={accessKeyId}
-            onChange={(e) => setAccessKeyId(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Secret Access Key:</label>
-          <input
-            type="password"
-            value={secretAccessKey}
-            onChange={(e) => setSecretAccessKey(e.target.value)}
-            required
-          />
-        </div>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2>Login</h2>
+        <input
+          type="text"
+          placeholder="Access Key ID"
+          value={accessKeyId}
+          onChange={(e) => setAccessKeyId(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Secret Access Key"
+          value={secretAccessKey}
+          onChange={(e) => setSecretAccessKey(e.target.value)}
+        />
         <button type="submit">Login</button>
       </form>
     </div>

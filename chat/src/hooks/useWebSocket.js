@@ -1,18 +1,22 @@
 // src/hooks/useWebSocket.js
 import { useEffect } from 'react';
-import { API_URL } from '../constants';
+import { useMessages } from '../context/MessageContext';
 
-const useWebSocket = (setMessages) => {
+const useWebSocket = (url) => {
+  const { setMessages } = useMessages();
+
   useEffect(() => {
-    const socket = new WebSocket(`${API_URL}/ws`);
+    const ws = new WebSocket(url);
 
-    socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, message]);
+    ws.onmessage = (event) => {
+      const newMessage = JSON.parse(event.data);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
-    return () => socket.close();
-  }, [setMessages]);
+    return () => ws.close();
+  }, [url, setMessages]);
+
+  return ws;
 };
 
 export default useWebSocket;

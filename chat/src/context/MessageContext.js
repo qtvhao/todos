@@ -1,50 +1,36 @@
 // src/context/MessageContext.js
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useAuth } from './AuthContext';
 import { fetchMessages } from '../api/api';
 
-export const MessageContext = createContext();
+const MessageContext = createContext();
 
 export const MessageProvider = ({ children }) => {
-  const [threads, setThreads] = useState({}); // Structure: { [threadId]: messages }
-  const [activeThread, setActiveThread] = useState(null);
+  const { auth } = useAuth();
+  const [messages, setMessages] = useState([]);
+  const [activeThreadId, setActiveThreadId] = useState(null);
 
   useEffect(() => {
-    const loadMessages = async () => {
-      const messages = await fetchMessages();
-      
-      // Group messages by thread
-      const groupedThreads = messages.reduce((acc, message) => {
-        const { threadId } = message;
-        if (!acc[threadId]) {
-          acc[threadId] = [];
-        }
-        acc[threadId].push(message);
-        return acc;
-      }, {});
+    if (auth) {
+      fetchMessages().then((data) => {
+        setMessages(data);
+        // Set initial active thread to the first thread found in messages
+        if (data.length > 0) setActiveThreadId(data[0].threadId);
+      });
+    }
+  }, [auth]);
 
-      setThreads(groupedThreads);
-      
-      // Set default active thread if not already set
-      if (!activeThread && Object.keys(groupedThreads).length > 0) {
-        setActiveThread(Object.keys(groupedThreads)[0]);
-      }
-    };
-
-    loadMessages();
-  }, [activeThread]);
-
-  const addMessageToThread = (threadId, message) => {
-    setThreads((prevThreads) => ({
-      ...prevThreads,
-      [threadId]: [...(prevThreads[threadId] || []), message],
-    }));
+  const changeThread = (threadId) => {
+    setActiveThreadId(threadId);
   };
 
   return (
     <MessageContext.Provider
-      value={{ threads, activeThread, setActiveThread, addMessageToThread }}
+      value={{ messages: messages, setMessages, activeThreadId, changeThread }}
     >
       {children}
     </MessageContext.Provider>
   );
 };
+
+export const useMessages = () => useContext(MessageContext);

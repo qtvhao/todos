@@ -1,0 +1,19 @@
+.left-sidebar {
+    width: 25%;
+    background: #f0f0f0;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+  }
+  
+  .thread-list {
+    margin-top: 10px;
+  }
+  
+  .thread-item {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .thread-item:hover {
+    background-color: #e0e0e0;
+  }

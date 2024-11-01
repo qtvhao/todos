@@ -1,35 +1,33 @@
 // src/components/App/App.js
+import React from 'react';
+import { AuthProvider, useAuth } from '../../context/AuthContext';
 import { MessageProvider } from '../../context/MessageContext';
-import LeftSidebar from '../LeftSidebar/LeftSidebar';
-import RightPanel from '../RightPanel/RightPanel';
-import React, { useContext } from 'react';
-import { AuthProvider, AuthContext } from '../../context/AuthContext';
 import Login from '../Login/Login';
+import RightPanel from '../RightPanel/RightPanel';
+import LeftSidebar from '../LeftSidebar/LeftSidebar';
 import './App.css';
 
 const AppContent = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { auth } = useAuth();
 
-  if (!isAuthenticated) {
-    return <Login />;
+  if (!auth) {
+    return <Login />; // Show Login if not authenticated
   }
 
   return (
-    <MessageProvider>
-      <div className="app-container">
-        <LeftSidebar />
-        <RightPanel />
-      </div>
-    </MessageProvider>
+    <div className="app">
+      <LeftSidebar />
+      <RightPanel />
+    </div>
   );
 };
 
-function App() {
-  return (
-    <AuthProvider>
+const App = () => (
+  <AuthProvider>
+    <MessageProvider>
       <AppContent />
-    </AuthProvider>
-  );
-}
+    </MessageProvider>
+  </AuthProvider>
+);
 
 export default App;
