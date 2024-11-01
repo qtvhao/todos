@@ -4,6 +4,7 @@ import { ZanzibarService } from '../auth/zanzibar.service';
 import { NotificationGateway } from '../notifications/notification/notification.gateway';
 import { QueueService } from '../queue/queue.service';
 import { Queue } from 'bull';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class TodosService {
@@ -41,6 +42,10 @@ export class TodosService {
       }
   }
 
+  makeid(length: number): string {
+    return uuidv4().slice(0, length);
+  }
+
   async createTodo(
     accessKeyId: string,
     secretAccessKey: string,
@@ -56,7 +61,7 @@ export class TodosService {
       queue,
     } = await this.queueService.addJob(jobData);
     const todo: Todo = {
-      id: Date.now().toString(),
+      id: this.makeid(10),
       job_id: Number(job.id),
       queue: queue.name,
       completed: false,
