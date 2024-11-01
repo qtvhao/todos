@@ -5,9 +5,10 @@ import { TodosModule } from './todos/todos.module';
 import { AuthModule } from './auth/auth.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { QueueModule } from './queue/queue.module';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
-  imports: [TodosModule, AuthModule, NotificationsModule, QueueModule],
+  imports: [TodosModule, AuthModule, NotificationsModule, QueueModule, MessagesModule],
   controllers: [AppController],
   providers: [AppService],
 })
