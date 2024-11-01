@@ -6,15 +6,15 @@ import './MessageForm.css';
 import { useMessages } from '../../context/MessageContext';
 const MessageForm = () => {
   const { message, handleChange, handleSend, resetForm } = useMessageForm();
-  const { doFetchMessages } = useMessages();
+  const { doFetchMessages, activeThreadId } = useMessages();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await handleSend({ text: message });
-    doFetchMessages();
-
-    // Reset the form after sending the message
-    resetForm(); // Clear the input after sending
+    if (message.trim()) {
+      await handleSend(message, activeThreadId);
+      resetForm(); // Clear the input after sending
+      doFetchMessages();
+    }
   };
 
   return (

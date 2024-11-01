@@ -21,9 +21,13 @@ export const MessageProvider = ({ children }) => {
   };
   const doFetchMessages = async () => {
     fetchMessages().then((data) => {
-      setMessages(data);
-      // Set initial active thread to the first thread found in messages
-      if (data.length > 0) setActiveThreadId(data[0].threadId);
+      setMessages((prevMessages) => {
+        // Filter out messages that are already in the state
+        const newMessages = data.filter((message) => {
+          return !prevMessages.some((prevMessage) => prevMessage.id === message.id);
+        });
+        return [...prevMessages, ...newMessages];
+      });
     });
   };
 

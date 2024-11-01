@@ -7,8 +7,8 @@ const useMessageForm = () => {
 
   const handleChange = (e) => setMessage(e.target.value);
   const resetForm = () => setMessage('');
-  const handleSend = async (message) => {
-    await sendMessage(message);
+  const handleSend = async (message, threadId) => {
+    await sendMessage(message, threadId);
   };
   
   return {

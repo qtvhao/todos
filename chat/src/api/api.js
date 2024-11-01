@@ -7,7 +7,10 @@ export const fetchMessages = async () => {
   return response.data.messages;
 };
 
-export const sendMessage = async (message) => {
-  const response = await axios.post(SEND_MESSAGE_ENDPOINT, { message });
+export const sendMessage = async (message, threadId) => {
+  const response = await axios.post(SEND_MESSAGE_ENDPOINT, { 
+    text: message,
+    threadId: threadId
+  });
   return response.data;
 };
