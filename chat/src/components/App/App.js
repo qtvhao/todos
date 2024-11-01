@@ -6,19 +6,34 @@ import Login from '../Login/Login';
 import RightPanel from '../RightPanel/RightPanel';
 import LeftSidebar from '../LeftSidebar/LeftSidebar';
 import './App.css';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+// Protected Route Wrapper
+const ProtectedRoute = ({ children }) => {
+  const { auth } = useAuth();
+  return auth ? children : <Navigate to="/login" />;
+};
 
 const AppContent = () => {
-  const { auth } = useAuth();
-
-  if (!auth) {
-    return <Login />; // Show Login if not authenticated
-  }
-
   return (
-    <div className="app">
-      <LeftSidebar />
-      <RightPanel />
-    </div>
+      <Routes>
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+        <Route
+          path="/chat"
+          element={
+            <ProtectedRoute>
+              <div className="app">
+                <LeftSidebar />
+                <RightPanel />
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/chat" />} />
+      </Routes>
   );
 };
 

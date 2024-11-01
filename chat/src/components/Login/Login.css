@@ -5,6 +5,7 @@
   align-items: center;
   height: 100vh;
   background-color: #f7f9fc;
+  /* margin: 0 auto; */
 }
 
 /* Style the form container */
@@ -65,3 +66,4 @@
 .login-form input + input {
   margin-top: 15px;
 }
+
