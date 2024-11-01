@@ -9,12 +9,12 @@ import { Queue } from 'bull';
 export class TodosService {
   private todos: Todo[] = [];
   private queues: Queue[];
+  private readonly logger = new Logger(TodosService.name);
 
   constructor(
     private readonly queueService: QueueService,
     private readonly zanzibarService: ZanzibarService,
-    private readonly notificationGateway: NotificationGateway,
-    private readonly logger: Logger,
+    private readonly notificationGateway: NotificationGateway
   ) {
     this.queues = this.queueService.getQueues();
     this.queues.forEach((queue) => { queue.on('completed', (job) => this.onCompleted(job, queue)); });
