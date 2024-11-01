@@ -16,7 +16,7 @@ export class TodosController {
     @Body('description') description: string,
   ) {
     this.logger.log(`Creating todo with title: ${title}`);
-    return await this.todosService.createTodo(
+    const todo = await this.todosService.createTodo(
       accessKeyId,
       secretAccessKey,
       {
@@ -24,6 +24,13 @@ export class TodosController {
         description,
       }
     );
+
+    return {
+      id: todo.id,
+      job_id: todo.job_id,
+      completed: todo.completed,
+      userId: todo.userId,
+    }
   }
 
   @Put(':id/complete')

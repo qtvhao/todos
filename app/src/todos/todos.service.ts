@@ -35,7 +35,7 @@ export class TodosService {
   onCompleted(job: any, queue: Queue) {
       this.logger.log('Job completed ', job.id, 'from queue', queue.name);
       this.logger.log(this.todos);
-      const todo = this.todos.find((t) => t.job_id === Number(job.id));
+      const todo = this.todos.find((t) => t.job_id === Number(job.id) && t.queue === queue.name);
       this.logger.log('Todo:', todo);
       if (todo) {
         this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is completed!`);
@@ -78,7 +78,7 @@ export class TodosService {
     }
     await this.zanzibarService.assignPermission(userId, 'read', todo.id);
 
-    return todo;
+    return todo
   }
 
   async completeTodo(id: string, accessKeyId: string, secretAccessKey: string): Promise<Todo> {
