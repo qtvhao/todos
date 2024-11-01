@@ -1,10 +1,13 @@
-// src/components/LeftSidebar.js
-import React from "react";
+import React, { useContext } from 'react';
+import { MessageContext } from '../context/MessageContext';
 
-const LeftSidebar = ({ threads, selectThread }) => {
+const LeftSidebar = () => {
+  const { threads, addThread, selectThread } = useContext(MessageContext);
+
   return (
     <div className="left-sidebar">
       <h2>Threads</h2>
+      <button onClick={addThread} className="add-thread-button">+ New Thread</button>
       <ul>
         {threads.map((thread) => (
           <li key={thread.id} onClick={() => selectThread(thread.id)}>
