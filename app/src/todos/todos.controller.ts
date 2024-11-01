@@ -1,10 +1,12 @@
 // src/todos/todos.controller.ts
-import { Controller, Post, Body, Put, Param } from '@nestjs/common';
+import { Controller, Post, Body, Put, Param, Logger } from '@nestjs/common';
 import { TodosService } from './todos.service';
 
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
+
+  private readonly logger = new Logger(TodosController.name);
 
   @Post()
   async createTodo(
@@ -13,7 +15,7 @@ export class TodosController {
     @Body('title') title: string,
     @Body('description') description: string,
   ) {
-    console.log('Creating todo with title:', title);
+    this.logger.log(`Creating todo with title: ${title}`);
     return await this.todosService.createTodo(
       accessKeyId,
       secretAccessKey,

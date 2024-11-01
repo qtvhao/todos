@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Logger } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { ZanzibarService } from '../auth/zanzibar.service';
 import { NotificationGateway } from '../notifications/notification/notification.gateway';
@@ -14,22 +14,23 @@ export class TodosService {
     private readonly queueService: QueueService,
     private readonly zanzibarService: ZanzibarService,
     private readonly notificationGateway: NotificationGateway,
+    private readonly logger: Logger,
   ) {
     this.queues = this.queueService.getQueues();
     this.queues.forEach((queue) => { queue.on('completed', (job) => this.onCompleted(job, queue)); });
     this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
-    console.log('QueueProcessor initialized with queues:', this.queues.map((q) => q.name));
+    this.logger.log('QueueProcessor initialized with queues:', this.queues.map((q) => q.name));
   }
 
   async process(job: any) {
-      console.log('Processing job:', job.data);
+      this.logger.log('Processing job:', job.data);
       return { result: 'success' };
   }
   onCompleted(job: any, queue: Queue) {
-      console.log('Job completed ', job.id, 'from queue', queue.name);
-      console.log(this.todos);
+      this.logger.log('Job completed ', job.id, 'from queue', queue.name);
+      this.logger.log(this.todos);
       const todo = this.todos.find((t) => t.job_id === Number(job.id));
-      console.log('Todo:', todo);
+      this.logger.log('Todo:', todo);
       if (todo) {
         this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is completed!`);
       }
@@ -41,7 +42,7 @@ export class TodosService {
     jobData: any,
   ): Promise<Todo> {
     const userId = await this.zanzibarService.getUserFromAccessKey(accessKeyId, secretAccessKey);
-    console.log('User ID:', userId);
+    this.logger.log('User ID:', userId);
 
     if (!userId) throw new Error('Invalid access keys');
 
@@ -52,10 +53,11 @@ export class TodosService {
       completed: false,
       userId,
     };
-    console.log('Created todo:', todo);
+    this.logger.log('Created todo:', todo);
 
     const todos = this.todos;
     todos.push(todo);
+    this.logger.log('Todos:', todos);
     this.todos = todos;
     if (!this.todos.find((t) => t.job_id === Number(job.id))) {
       throw new Error('Failed to create todo');
@@ -68,7 +70,10 @@ export class TodosService {
   async completeTodo(id: string, accessKeyId: string, secretAccessKey: string): Promise<Todo> {
     const todo = this.todos.find((t) => t.id === id);
 
-    if (!todo) throw new NotFoundException('Todo not found');
+    if (!todo) {
+      this.logger.error('Todo not found');
+      throw new NotFoundException('Todo not found');
+    }
 
     const hasPermission = await this.zanzibarService.checkPermission(
       accessKeyId,
@@ -77,10 +82,14 @@ export class TodosService {
       todo.id,
     );
 
-    if (!hasPermission) throw new Error('Unauthorized action');
+    if (!hasPermission) {
+      this.logger.error('Unauthorized action');
+      throw new Error('Unauthorized action');
+    }
 
     todo.completed = true;
 
+    this.logger.log(`Todo ${todo.id} marked as completed`);
     this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is completed!`);
     return todo;
   }
