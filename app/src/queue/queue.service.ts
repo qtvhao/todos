@@ -20,7 +20,7 @@ export class QueueService {
     return hash >>> 0;
   }
 
-  async addJob(jobData: any) {
+  async addJob(jobData: any): Promise<{ job: any, queue: Queue }> {
     if (this.queues.length === 0) {
       throw new Error('No queues are available');
     }
@@ -31,6 +31,11 @@ export class QueueService {
 
     console.log(`Adding job with data: ${jobDataString} to queue: ${selectedQueue.name}`);
 
-    return await selectedQueue.add(jobData);
+    let added = await selectedQueue.add(jobData);
+
+    return {
+      job: added,
+      queue: selectedQueue,
+    }
   }
 }

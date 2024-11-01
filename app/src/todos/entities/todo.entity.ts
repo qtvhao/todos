@@ -3,4 +3,5 @@ export class Todo {
     job_id: number;
     completed: boolean;
     userId: string;
+    queue: string;
 }

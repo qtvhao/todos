@@ -17,7 +17,12 @@ export class TodosService {
     private readonly notificationGateway: NotificationGateway
   ) {
     this.queues = this.queueService.getQueues();
-    this.queues.forEach((queue) => { queue.on('completed', (job) => this.onCompleted(job, queue)); });
+    this.queues.forEach((queue) => {
+      queue.on('completed', (job) => {
+        console.log('A job has been completed');
+        this.onCompleted(job, queue);
+      });
+    });
     this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
     this.logger.log('QueueProcessor initialized with queues:', this.queues.map((q) => q.name));
   }
@@ -46,10 +51,14 @@ export class TodosService {
 
     if (!userId) throw new Error('Invalid access keys');
 
-    let job = await this.queueService.addJob(jobData);
+    let {
+      job,
+      queue,
+    } = await this.queueService.addJob(jobData);
     const todo: Todo = {
       id: Date.now().toString(),
       job_id: Number(job.id),
+      queue: queue.name,
       completed: false,
       userId,
     };
