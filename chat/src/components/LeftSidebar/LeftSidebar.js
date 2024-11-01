@@ -1,13 +1,22 @@
 // src/components/LeftSidebar/LeftSidebar.js
-import React from 'react';
+import React, { useContext } from 'react';
+import { MessageContext } from '../../context/MessageContext';
 import ThreadItem from './ThreadItem';
 
 const LeftSidebar = () => {
+  const { threads, activeThread, setActiveThread } = useContext(MessageContext);
+
   return (
     <div className="left-sidebar">
       <h3>Conversations</h3>
-      <ThreadItem thread="General" />
-      <ThreadItem thread="Random" />
+      {Object.keys(threads).map((threadId) => (
+        <ThreadItem
+          key={threadId}
+          threadId={threadId}
+          active={threadId === activeThread}
+          onClick={() => setActiveThread(threadId)}
+        />
+      ))}
     </div>
   );
 };

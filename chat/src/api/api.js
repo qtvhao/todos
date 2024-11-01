@@ -3,7 +3,9 @@ import { API_URL } from '../constants';
 
 export const fetchMessages = async () => {
   const response = await fetch(`${API_URL}/messages`);
-  return response.json();
+  const data = await response.json();
+
+  return data;
 };
 
 export const sendMessage = async (message) => {

@@ -1,14 +1,12 @@
 // src/components/RightPanel/MessageForm.js
-import React, { useContext } from 'react';
+import React from 'react';
 import { sendMessage } from '../../api/api';
 import useMessageForm from './hooks/useMessageForm';
-import { MessageContext } from '../../context/MessageContext';
 
-const MessageForm = () => {
-  const { setMessages } = useContext(MessageContext);
+const MessageForm = ({ threadId, addMessageToThread }) => {
   const { message, setMessage, handleSubmit } = useMessageForm(async (msg) => {
     const newMessage = await sendMessage(msg);
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    addMessageToThread(threadId, { ...newMessage, threadId });
   });
 
   return (

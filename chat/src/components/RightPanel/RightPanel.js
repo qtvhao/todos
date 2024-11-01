@@ -5,12 +5,13 @@ import MessageForm from './MessageForm';
 import { MessageContext } from '../../context/MessageContext';
 
 const RightPanel = () => {
-  const { messages, setMessages } = useContext(MessageContext);
+  const { threads, activeThread, addMessageToThread } = useContext(MessageContext);
+  const messages = threads[activeThread] || [];
 
   return (
     <div className="right-panel">
       <MessageList messages={messages} />
-      <MessageForm setMessages={setMessages} />
+      <MessageForm threadId={activeThread} addMessageToThread={addMessageToThread} />
     </div>
   );
 };
