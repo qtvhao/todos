@@ -2,11 +2,13 @@
 import React from 'react';
 import { AuthProvider, useAuth } from '../../context/AuthContext';
 import { MessageProvider } from '../../context/MessageContext';
+import * as useWebSocket from '../../hooks/useWebSocket';
 import Login from '../Login/Login';
 import RightPanel from '../RightPanel/RightPanel';
 import LeftSidebar from '../LeftSidebar/LeftSidebar';
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { WS_URL } from '../../constants';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -15,6 +17,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const AppContent = () => {
+  useWebSocket.default(WS_URL);
   return (
       <Routes>
         <Route
