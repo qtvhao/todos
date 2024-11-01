@@ -26,7 +26,7 @@ export class TodosService {
         });
       });
     });
-    this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
+    // this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
     this.logger.log('QueueProcessor initialized with queues:', this.queues.map((q) => q.name));
   }
 
