@@ -24,9 +24,9 @@ const MessageForm = () => {
     <div>
       <small>
         <pre className="curl-command">
-          curl '{SEND_MESSAGE_ENDPOINT}' \ <br />
-          -X 'POST' \ <br />
-          -H 'Content-Type: application/json' \ <br />
+          curl '{SEND_MESSAGE_ENDPOINT}' \ <br /> &nbsp;
+          -X 'POST' \ <br /> &nbsp;
+          -H 'Content-Type: application/json' \ <br /> &nbsp;
           --data-binary '{dataBinary}'
         </pre>
       </small>
