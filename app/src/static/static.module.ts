@@ -9,6 +9,9 @@ import { ConfigModule } from '@nestjs/config';
     ServeStaticModule.forRoot({
       rootPath: process.env.STATIC_FOLDER || join(__dirname, '..', 'public'),
       serveRoot: '/static',
+      serveStaticOptions: {
+        index: false,
+      },
     }),
   ],
 })
