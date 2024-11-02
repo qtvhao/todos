@@ -21,11 +21,14 @@ export const fetchMessages = async () => {
 export const sendMessage = async (message) => {
   const token = Cookies.get('token');
   const [accessKeyId, secretAccessKey] = token.split(':');
+  const jobData = {
+    format: 'undefined',
+    text: message,
+  };
   const response = await axios.post(SEND_MESSAGE_ENDPOINT, {
     accessKeyId,
     secretAccessKey,
-    title: message,
-    description: message,
+    jobData,
   });
   const {
     id,
