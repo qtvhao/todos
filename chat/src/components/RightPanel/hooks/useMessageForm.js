@@ -17,7 +17,7 @@ const useMessageForm = () => {
       "accessKeyId": accessKeyId,
       "secretAccessKey": secretAccessKey, 
       "jobData": {
-        "format":"undefined",
+        "format": "text-with-audio",
         "text": message
       },
     }, null, 2).replace(/\n/g, '\n   '));

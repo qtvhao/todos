@@ -22,7 +22,7 @@ export const sendMessage = async (message) => {
   const token = Cookies.get('token');
   const [accessKeyId, secretAccessKey] = token.split(':');
   const jobData = {
-    format: 'undefined',
+    format: 'text-with-audio',
     text: message,
   };
   const response = await axios.post(SEND_MESSAGE_ENDPOINT, {
