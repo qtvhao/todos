@@ -3,7 +3,7 @@ import { Todo } from './entities/todo.entity';
 import { ZanzibarService } from '../auth/zanzibar.service';
 import { NotificationGateway } from '../notifications/notification/notification.gateway';
 import { QueueService } from '../queue/queue.service';
-import { Queue } from 'bull';
+import { Queue, Job } from 'bull';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -34,13 +34,18 @@ export class TodosService {
       this.logger.log('Processing job:', job.data);
       return { result: 'success' };
   }
-  onCompleted(job: any, queue: Queue) {
+  onCompleted(job: Job, queue: Queue) {
       this.logger.log('Job completed ', job.id, 'from queue', queue.name);
       this.logger.log(this.todos);
       const todo = this.todos.find((t) => t.job_id === Number(job.id) && t.queue === queue.name);
       this.logger.log('Todo:', todo);
       if (todo) {
         this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is completed!`);
+        this.notificationGateway.sendJobResult(todo.userId, {
+          todo_id: todo.id,
+          job_id: job.id,
+          result: job.returnvalue,
+        });
       }
   }
 
