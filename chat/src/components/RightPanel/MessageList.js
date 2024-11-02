@@ -41,7 +41,7 @@ const MessageList = () => {
         </pre>
       </div>
       {filteredMessages.map((msg, index) => (
-        <div key={index} className="message-item" style={{ whiteSpace: 'pre', overflowY: 'auto' }}>
+        <div key={index} className="message-item" style={{ whiteSpace: 'pre', overflowY: 'auto', textWrap: 'wrap' }}>
           {msg.audioFile && ( <audio controls src={msg.audioFile} autoPlay /> )}
           <strong>{msg.user}</strong>: {msg.text}
         </div>
