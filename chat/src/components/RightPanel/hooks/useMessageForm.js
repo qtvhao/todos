@@ -16,7 +16,7 @@ const useMessageForm = () => {
       "secretAccessKey": secretAccessKey, 
       "title": e.target.value, 
       "description": e.target.value
-    }, null, 2));
+    }, null, 2).replace(/\n/g, '\n   '));
   };
   const resetForm = () => setMessage('');
   const handleSend = async (message, threadId) => {
