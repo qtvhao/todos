@@ -21,6 +21,7 @@ const MessageList = () => {
     <div className="message-list">
       <div className="message-item" style={{ whiteSpace: 'pre' }}>
         <pre style={{ whiteSpace: 'pre-wrap' }}>
+        import io from 'socket.io-client'; <br />
         const socket = io({JSON.stringify(WS_URL)}, { JSON.stringify(opts, null, 2) }); <br />
         socket.on('connect', {"() => {"} <br />
         &nbsp;  console.log('Connected to WebSocket'); <br />
@@ -32,7 +33,10 @@ const MessageList = () => {
           let result = message.result; <br /> &nbsp;
           console.log('todo_id:', todo_id); <br /> &nbsp;
           console.log('job_id:', job_id); <br /> &nbsp;
-          console.log('result:', result); <br />
+          console.log('result:', result); <br /> &nbsp;
+          console.log('audioFile:', result.audioFile); <br /> &nbsp;
+          console.log('formatted:', result.formatted); <br /> &nbsp;
+          console.log('texts:', result.texts); <br />
         {"});"} <br />
         </pre>
       </div>
