@@ -1,10 +1,4 @@
-FROM ghcr.io/qtvhao/debian-minimum:main
-
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
-
-RUN which node || nvm install 20
-RUN npm -v && node -v
-RUN which yarn || npm install -g yarn
+FROM ghcr.io/qtvhao/node-20.12.2:main
 
 WORKDIR /app
 COPY ./app/package.json ./app/yarn.lock ./
