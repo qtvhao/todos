@@ -77,7 +77,7 @@ jobs:
         timeout-minutes: 5
         with:
           context: .
-          platforms: linux/arm64,linux/amd64
+          platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/qtvhao/todos:latest
           labels: ${{ steps.meta.outputs.labels }}
