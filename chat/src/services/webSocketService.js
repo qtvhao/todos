@@ -17,6 +17,15 @@ const connectWebSocket = (url, token) => {
     socket.on('notification', (message) => {
       console.log('Received message:', message);
     });
+    socket.on('job_result', (message) => {
+      console.log('Received message:', Object.keys(message));
+      let todo_id = message.todo_id;
+      let job_id = message.job_id;
+      let result = message.result;
+      console.log('todo_id:', todo_id);
+      console.log('job_id:', job_id);
+      console.log('result:', result);
+    });
 
     return socket;
   } else {
