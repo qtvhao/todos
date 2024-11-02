@@ -77,8 +77,10 @@ describe('AppController (e2e)', () => {
           .send({
             accessKeyId,
             secretAccessKey,
-            title: 'Test Todo',
-            description: 'This is a test todo',
+            jobData: {
+              format: 'undefined',
+              text: 'This is a test todo' + Math.random(),
+            },
           })
     ]);
     let elapsed = Date.now() - todosCreatedAt;

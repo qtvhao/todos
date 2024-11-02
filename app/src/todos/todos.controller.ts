@@ -12,17 +12,13 @@ export class TodosController {
   async createTodo(
     @Body('accessKeyId') accessKeyId: string,
     @Body('secretAccessKey') secretAccessKey: string,
-    @Body('title') title: string,
-    @Body('description') description: string,
+    @Body('jobData') jobData: object,
   ) {
-    this.logger.log(`Creating todo with title: ${title}`);
+    this.logger.log(`Creating todo with title: ${jobData}`);
     const todo = await this.todosService.createTodo(
       accessKeyId,
       secretAccessKey,
-      {
-        title,
-        description,
-      }
+      jobData,
     );
 
     return {
