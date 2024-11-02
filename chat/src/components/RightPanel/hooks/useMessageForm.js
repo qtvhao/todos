@@ -16,8 +16,10 @@ const useMessageForm = () => {
     setDataBinary(JSON.stringify({ 
       "accessKeyId": accessKeyId,
       "secretAccessKey": secretAccessKey, 
-      "title": message, 
-      "description": message
+      "jobData": {
+        "format":"undefined",
+        "text": message
+      },
     }, null, 2).replace(/\n/g, '\n   '));
   }, [message]);
   const resetForm = () => setMessage('');
