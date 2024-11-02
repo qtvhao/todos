@@ -18,7 +18,7 @@ export const fetchMessages = async () => {
   return messages;
 };
 
-export const sendMessage = async (message, threadId) => {
+export const sendMessage = async (message) => {
   const token = Cookies.get('token');
   const [accessKeyId, secretAccessKey] = token.split(':');
   const response = await axios.post(SEND_MESSAGE_ENDPOINT, {
@@ -40,7 +40,7 @@ export const sendMessage = async (message, threadId) => {
   const newMessage = { 
     text: message,
     sender: 'You',
-    threadId: threadId ? threadId:id, 
+    threadId: id, 
     timestamp: Date.now() 
   };
   await store.add(newMessage);
