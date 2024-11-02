@@ -25,8 +25,7 @@ const MessageList = () => {
         &nbsp;  console.log('Connected to WebSocket'); <br />
         {"});"} <br />
         {/*  */}
-        socket.on('job_result', {"(message) => {"} <br />
-          console.log('Received message:', Object.keys(message)); <br /> &nbsp;
+        socket.on('job_result', {"(message) => {"} <br /> &nbsp;
           let todo_id = message.todo_id; <br /> &nbsp;
           let job_id = message.job_id; <br /> &nbsp;
           let result = message.result; <br /> &nbsp;
