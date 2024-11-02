@@ -3,6 +3,7 @@ import React from 'react';
 import { useMessages } from '../../context/MessageContext';
 import './MessageList.css';
 import Cookies from 'js-cookie';
+import { WS_URL } from '../../constants';
 
 const MessageList = () => {
   const { messages, activeThreadId } = useMessages();
@@ -20,7 +21,7 @@ const MessageList = () => {
     <div className="message-list">
       <div class="message-item" style={{ whiteSpace: 'pre' }}>
         <pre style={{ whiteSpace: 'pre-wrap' }}>
-        const socket = io(url, { JSON.stringify(opts, null, 2) }); <br />
+        const socket = io({JSON.stringify(WS_URL)}, { JSON.stringify(opts, null, 2) }); <br />
         socket.on('connect', {"() => {"} <br />
         &nbsp;  console.log('Connected to WebSocket'); <br />
         {"});"} <br />
