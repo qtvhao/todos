@@ -24,8 +24,8 @@ export const sendMessage = async (message, threadId) => {
   const response = await axios.post(SEND_MESSAGE_ENDPOINT, {
     accessKeyId,
     secretAccessKey,
-    title: 'Test Todo',
-    description: 'This is a test todo',
+    title: message,
+    description: message,
   });
   const {
     id,
@@ -48,3 +48,12 @@ export const sendMessage = async (message, threadId) => {
   // 
   return newMessage;
 };
+
+export const addAssistantMessage = async (message) => {
+ const db = await dbPromise;
+  const tx = db.transaction('messages', 'readwrite');
+  const store = tx.objectStore('messages');
+  await store.add(message);
+  await tx.done;  
+}
+

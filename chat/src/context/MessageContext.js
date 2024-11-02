@@ -1,7 +1,7 @@
 // src/context/MessageContext.js
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useAuth } from './AuthContext';
-import { fetchMessages } from '../api/api';
+import { fetchMessages, addAssistantMessage } from '../api/api';
 
 const MessageContext = createContext();
 
@@ -19,6 +19,11 @@ export const MessageProvider = ({ children }) => {
   const changeThread = (threadId) => {
     setActiveThreadId(threadId);
   };
+  const addAssistantMessageFn = async (message) => {
+    await addAssistantMessage(message);
+    await doFetchMessages();
+    changeThread(message.threadId);
+  };
   const doFetchMessages = async () => {
     fetchMessages().then((data) => {
       setMessages((prevMessages) => {
@@ -33,7 +38,7 @@ export const MessageProvider = ({ children }) => {
 
   return (
     <MessageContext.Provider
-      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages }}
+      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn }}
     >
       {children}
     </MessageContext.Provider>

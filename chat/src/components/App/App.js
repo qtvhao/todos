@@ -2,7 +2,7 @@
 import React from 'react';
 import { AuthProvider, useAuth } from '../../context/AuthContext';
 import { MessageProvider } from '../../context/MessageContext';
-import * as useWebSocket from '../../hooks/useWebSocket';
+import useWebSocket from '../../hooks/useWebSocket';
 import Login from '../Login/Login';
 import RightPanel from '../RightPanel/RightPanel';
 import LeftSidebar from '../LeftSidebar/LeftSidebar';
@@ -17,7 +17,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const AppContent = () => {
-  useWebSocket.default(WS_URL);
+  useWebSocket(WS_URL);
   return (
       <Routes>
         <Route
