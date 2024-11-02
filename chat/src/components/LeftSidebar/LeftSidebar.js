@@ -9,6 +9,7 @@ const LeftSidebar = () => {
 
   // Group messages by threadId to display a list of threads
   const threads = useMemo(() => {
+    console.log('Computing threads', messages);
     const threadMap = {};
     messages.forEach((msg) => {
       if (!threadMap[msg.threadId]) {
