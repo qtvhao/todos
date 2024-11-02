@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { connectWebSocket } from '../services/webSocketService';
 import { useMessages } from '../context/MessageContext';
-import { WS_URL } from '../constants';
+import { WS_URL, STATIC_URL } from '../constants';
 
 const useWebSocket = () => {
   const { 
@@ -24,8 +24,14 @@ const useWebSocket = () => {
         console.log('todo_id:', todo_id);
         console.log('job_id:', job_id);
         console.log('result:', result);
+        let audioFile = result.audioFile?.replace('/app/storage/audio/', STATIC_URL);
+        let formatted = result.formatted
+        let texts = result.texts
         addAssistantMessage({
-          text: JSON.stringify(result),
+          audioFile: audioFile,
+          formatted: formatted,
+          texts: texts,
+          text: formatted,
           sender: 'Assistant',
           threadId: todo_id,
           timestamp: Date.now()

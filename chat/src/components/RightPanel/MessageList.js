@@ -19,7 +19,7 @@ const MessageList = () => {
 
   return (
     <div className="message-list">
-      <div class="message-item" style={{ whiteSpace: 'pre' }}>
+      <div className="message-item" style={{ whiteSpace: 'pre' }}>
         <pre style={{ whiteSpace: 'pre-wrap' }}>
         const socket = io({JSON.stringify(WS_URL)}, { JSON.stringify(opts, null, 2) }); <br />
         socket.on('connect', {"() => {"} <br />
@@ -37,7 +37,8 @@ const MessageList = () => {
         </pre>
       </div>
       {filteredMessages.map((msg, index) => (
-        <div key={index} className="message-item">
+        <div key={index} className="message-item" style={{ whiteSpace: 'pre', overflowY: 'auto' }}>
+          {msg.audioFile && ( <audio controls src={msg.audioFile} autoPlay /> )}
           <strong>{msg.user}</strong>: {msg.text}
         </div>
       ))}
