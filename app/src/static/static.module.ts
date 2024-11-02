@@ -7,7 +7,7 @@ import { ConfigModule } from '@nestjs/config';
   imports: [
     ConfigModule.forRoot(),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', process.env.STATIC_FOLDER || 'public'),
+      rootPath: process.env.STATIC_FOLDER || join(__dirname, '..', 'public'),
       serveRoot: '/static',
     }),
   ],
