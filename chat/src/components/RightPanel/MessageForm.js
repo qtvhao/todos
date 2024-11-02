@@ -2,6 +2,9 @@
 import React from 'react';
 import useMessageForm from './hooks/useMessageForm';
 import './MessageForm.css';
+import {
+  SEND_MESSAGE_ENDPOINT,
+} from '../../constants';
 
 import { useMessages } from '../../context/MessageContext';
 const MessageForm = () => {
@@ -21,7 +24,7 @@ const MessageForm = () => {
     <div>
       <small>
         <pre className="curl-command">
-          curl 'https://http-generate-partnerapis-production-80.schnworks.com/todos' \ <br />
+          curl '{SEND_MESSAGE_ENDPOINT}' \ <br />
           -X 'POST' \ <br />
           -H 'Content-Type: application/json' \ <br />
           --data-binary '{dataBinary}'

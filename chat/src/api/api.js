@@ -20,7 +20,6 @@ export const fetchMessages = async () => {
 
 export const sendMessage = async (message, threadId) => {
   const token = Cookies.get('token');
-  console.log('token', token);
   const [accessKeyId, secretAccessKey] = token.split(':');
   const response = await axios.post(SEND_MESSAGE_ENDPOINT, {
     accessKeyId,
@@ -28,7 +27,6 @@ export const sendMessage = async (message, threadId) => {
     title: 'Test Todo',
     description: 'This is a test todo',
   });
-  console.log('response', response.data);
   const {
     id,
     // user_id,
