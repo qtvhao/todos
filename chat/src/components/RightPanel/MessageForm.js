@@ -32,6 +32,7 @@ const MessageForm = () => {
       </small>
       <form className="message-form" onSubmit={onSubmit}>
         <input
+          autoFocus
           type="text"
           placeholder="Type your message"
           value={message}

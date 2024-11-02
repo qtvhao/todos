@@ -1,5 +1,5 @@
 // src/components/RightPanel/hooks/useMessageForm.js
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { sendMessage } from '../../../api/api';
 import Cookies from 'js-cookie';
 
@@ -8,16 +8,18 @@ const useMessageForm = () => {
   const [dataBinary, setDataBinary] = useState('');
 
   const handleChange = (e) => {
+    setMessage(e.target.value);
+  };
+  useEffect(() => {
     const token = Cookies.get('token');
     const [accessKeyId, secretAccessKey] = token.split(':');
-    setMessage(e.target.value);
     setDataBinary(JSON.stringify({ 
       "accessKeyId": accessKeyId,
       "secretAccessKey": secretAccessKey, 
-      "title": e.target.value, 
-      "description": e.target.value
+      "title": message, 
+      "description": message
     }, null, 2).replace(/\n/g, '\n   '));
-  };
+  }, [message]);
   const resetForm = () => setMessage('');
   const handleSend = async (message, threadId) => {
     await sendMessage(message, threadId);
