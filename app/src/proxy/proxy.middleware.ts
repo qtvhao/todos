@@ -4,7 +4,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 @Injectable()
 export class ProxyMiddleware implements NestMiddleware {
-  private readonly targetUrl = 'http://memory-permissions.system-production:80/';
+  private readonly targetUrl = 'http://memory-permissions.system-production';
 
   use(req: any, res: any, next: () => void) {
     const proxy = createProxyMiddleware({
