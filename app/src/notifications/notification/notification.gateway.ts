@@ -39,9 +39,11 @@ export class NotificationGateway implements OnGatewayConnection {
   }
 
   sendJobResult(userId: string, message: any) {
+    console.log('Checking sockets for user:', userId);
     if (this.userSockets.has(userId)) {
+      console.log('Sending job result to user:', userId);
       const clients = this.userSockets.get(userId);
-      console.log('Sending job result to user:', userId, JSON.stringify(message, null, 2));
+      console.log('Sending job result to user:', userId, JSON.stringify(Object.keys(message), null, 2), "Number of clients: ", clients.length);
       clients.forEach((client) => {
         client.emit('job_result', message);
       });
@@ -51,7 +53,7 @@ export class NotificationGateway implements OnGatewayConnection {
   notifyUser(userId: string, message: string) {
     if (this.userSockets.has(userId)) {
       const clients = this.userSockets.get(userId);
-      console.log('Notifying user:', userId, Object.keys(message));
+      console.log('Notifying user:', userId, message);
       clients.forEach((client) => {
         client.emit('notification', message);
       });
