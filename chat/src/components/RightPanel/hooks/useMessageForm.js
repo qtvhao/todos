@@ -24,7 +24,7 @@ const useMessageForm = () => {
   }, [message]);
   const resetForm = () => setMessage('');
   const handleSend = async (message, threadId) => {
-    await sendMessage(message, threadId);
+    return await sendMessage(message, threadId);
   };
   
   return {

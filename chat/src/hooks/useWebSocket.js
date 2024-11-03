@@ -24,13 +24,13 @@ const useWebSocket = () => {
         console.log('todo_id:', todo_id);
         console.log('job_id:', job_id);
         console.log('result:', result);
+        let tokens = result.tokens
         let audioFile = result.audioFile?.replace('/app/storage/audio/', STATIC_URL);
         let formatted = result.formatted
-        let texts = result.texts
         addAssistantMessage({
           audioFile: audioFile,
           formatted: formatted,
-          texts: texts,
+          tokens,
           text: formatted,
           sender: 'Assistant',
           threadId: todo_id,
