@@ -42,16 +42,16 @@ const MessageList = () => {
         </pre>
       </div>
       {filteredMessages.map((msg, index) => {
-        // const tokens = msg.tokens?.map((token) => {
-        //   delete token.raw;
-        //   delete token.tokens;
-        //   token.items = token.items?.map((item) => {
-        //     delete item.raw;
-        //     delete item.tokens;
-        //     return item;
-        //   });
-        //   return token;
-        // });
+        const tokens = msg.tokens?.map((token) => {
+          delete token.raw;
+          delete token.tokens;
+          token.items = token.items?.map((item) => {
+            delete item.raw;
+            delete item.tokens;
+            return item;
+          });
+          return token;
+        });
         return (
           <div key={index}>
             <div className="message-item" style={{ overflowY: 'auto', textWrap: 'wrap' }}>
@@ -65,14 +65,14 @@ const MessageList = () => {
               <strong>console.log(msg.text);</strong>
               <Markdown>{msg.text}</Markdown>
   
-              {/* {tokens && (
+              {tokens && (
                 <div>
                   <strong>console.log(msg.tokens);</strong>
                   <pre style={{ whiteSpace: 'pre-wrap' }}>
                     {JSON.stringify(tokens, null, 2)}
                   </pre>
                 </div>
-              )} */}
+              )}
             </div>
           </div>
         );
