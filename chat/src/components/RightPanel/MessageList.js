@@ -4,6 +4,7 @@ import { useMessages } from '../../context/MessageContext';
 import './MessageList.css';
 import Cookies from 'js-cookie';
 import { WS_URL } from '../../constants';
+import { Markdown } from './Markdown';
 
 const MessageList = () => {
   const { messages, activeThreadId } = useMessages();
@@ -41,9 +42,10 @@ const MessageList = () => {
         </pre>
       </div>
       {filteredMessages.map((msg, index) => (
-        <div key={index} className="message-item" style={{ whiteSpace: 'pre', overflowY: 'auto', textWrap: 'wrap' }}>
+        <div key={index} className="message-item" style={{ overflowY: 'auto', textWrap: 'wrap' }}>
           {msg.audioFile && ( <audio controls src={msg.audioFile} autoPlay /> )}
-          <strong>{msg.user}</strong>: {msg.text}
+          <strong>{msg.user}</strong>: 
+          <Markdown>{msg.text}</Markdown>
         </div>
       ))}
     </div>
