@@ -9,12 +9,14 @@ import {
 import { useMessages } from '../../context/MessageContext';
 const MessageForm = () => {
   const { message, handleChange, dataBinary, handleSend, resetForm } = useMessageForm();
-  const { doFetchMessages, activeThreadId } = useMessages();
+  const { doFetchMessages, activeThreadId, changeThread } = useMessages();
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (message.trim()) {
-      await handleSend(message, activeThreadId);
+      let sent = await handleSend(message, activeThreadId);
+      console.log("Sent", sent)
+      changeThread(sent.threadId);
       resetForm(); // Clear the input after sending
       doFetchMessages();
     }

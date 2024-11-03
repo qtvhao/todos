@@ -33,6 +33,8 @@ const Login = () => {
           onChange={(e) => setSecretAccessKey(e.target.value)}
         />
         <button type="submit">Login</button>
+
+        <a href="/signup" className='signup-link'>Sign Up</a>
       </form>
     </div>
   );

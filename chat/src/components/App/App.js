@@ -9,6 +9,7 @@ import LeftSidebar from '../LeftSidebar/LeftSidebar';
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { WS_URL } from '../../constants';
+import SignUp from '../SignUp/SignUp';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -23,6 +24,10 @@ const AppContent = () => {
         <Route
           path="/login"
           element={<Login />}
+        />
+        <Route 
+          path="/signup"
+          element={<SignUp />}
         />
         <Route
           path="/chat"

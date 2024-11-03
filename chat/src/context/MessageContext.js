@@ -22,7 +22,7 @@ export const MessageProvider = ({ children }) => {
   const addAssistantMessageFn = async (message) => {
     await addAssistantMessage(message);
     await doFetchMessages();
-    changeThread(message.threadId);
+    setActiveThreadId(message.threadId);
   };
   const doFetchMessages = async () => {
     fetchMessages().then((data) => {

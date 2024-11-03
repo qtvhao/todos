@@ -4,6 +4,7 @@ import { useMessages } from '../../context/MessageContext';
 import './MessageList.css';
 import Cookies from 'js-cookie';
 import { WS_URL } from '../../constants';
+import { Markdown } from './Markdown';
 
 const MessageList = () => {
   const { messages, activeThreadId } = useMessages();
@@ -40,12 +41,42 @@ const MessageList = () => {
         {"});"} <br />
         </pre>
       </div>
-      {filteredMessages.map((msg, index) => (
-        <div key={index} className="message-item" style={{ whiteSpace: 'pre', overflowY: 'auto', textWrap: 'wrap' }}>
-          {msg.audioFile && ( <audio controls src={msg.audioFile} autoPlay /> )}
-          <strong>{msg.user}</strong>: {msg.text}
-        </div>
-      ))}
+      {filteredMessages.map((msg, index) => {
+        // const tokens = msg.tokens?.map((token) => {
+        //   delete token.raw;
+        //   delete token.tokens;
+        //   token.items = token.items?.map((item) => {
+        //     delete item.raw;
+        //     delete item.tokens;
+        //     return item;
+        //   });
+        //   return token;
+        // });
+        return (
+          <div key={index}>
+            <div className="message-item" style={{ overflowY: 'auto', textWrap: 'wrap' }}>
+            
+              {msg.audioFile && (
+                <div style={{ marginBottom: '30px' }}>
+                  <strong>console.log(msg.audioFile);</strong>
+                  <audio controls src={msg.audioFile} autoPlay />
+                </div>
+              )}
+              <strong>console.log(msg.text);</strong>
+              <Markdown>{msg.text}</Markdown>
+  
+              {/* {tokens && (
+                <div>
+                  <strong>console.log(msg.tokens);</strong>
+                  <pre style={{ whiteSpace: 'pre-wrap' }}>
+                    {JSON.stringify(tokens, null, 2)}
+                  </pre>
+                </div>
+              )} */}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
