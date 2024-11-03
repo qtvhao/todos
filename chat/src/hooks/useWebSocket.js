@@ -17,6 +17,7 @@ const useWebSocket = () => {
         console.log('Received message:', message);
       });
       socket.on('job_result', (message) => {
+        message = JSON.parse(message);
         console.log('Received message:', Object.keys(message));
         let todo_id = message.todo_id;
         let job_id = message.job_id;
