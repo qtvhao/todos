@@ -1,15 +1,14 @@
-/* Center the login form within the page */
-.login-container {
+/* Center the signup form within the page */
+.signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: #f7f9fc;
-  /* margin: 0 auto; */
 }
 
 /* Style the form container */
-.login-form {
+.signup-form {
   background-color: #ffffff;
   padding: 30px 40px;
   border-radius: 8px;
@@ -20,14 +19,14 @@
 }
 
 /* Heading style */
-.login-form h2 {
+.signup-form h2 {
   margin-bottom: 20px;
   color: #333;
   font-weight: 600;
 }
 
 /* Input field styles */
-.login-form input {
+.signup-form input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -37,13 +36,13 @@
 }
 
 /* Input field focus effect */
-.login-form input:focus {
+.signup-form input:focus {
   border-color: #1890ff;
   outline: none;
 }
 
 /* Button styling */
-.login-form button {
+.signup-form button {
   width: 100%;
   padding: 10px;
   background-color: #1890ff;
@@ -58,21 +57,20 @@
 }
 
 /* Button hover effect */
-.login-form button:hover {
+.signup-form button:hover {
   background-color: #40a9ff;
 }
 
 /* Add some spacing between form elements */
-.login-form input + input {
+.signup-form input + input {
   margin-top: 15px;
 }
 
-.signup-link {
+.login-link {
   display: block;
   margin-top: 10px;
   font-size: 14px;
   color: #333;
-
-    color: #1890ff;
-    text-decoration: none;
+  color: #1890ff;
+  text-decoration: none;
 }
