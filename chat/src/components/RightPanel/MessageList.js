@@ -66,14 +66,14 @@ const MessageList = () => {
               <strong>console.log(msg.text);</strong>
               <Markdown>{msg.text}</Markdown>
   
-              {tokens && (
+              {/* {tokens && (
                 <div>
                   <strong>console.log(msg.tokens);</strong>
                   <pre style={{ whiteSpace: 'pre-wrap' }}>
                     {JSON.stringify(tokens, null, 2)}
                   </pre>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         );
