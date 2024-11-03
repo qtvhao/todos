@@ -42,7 +42,7 @@ const MessageList = () => {
         </pre>
       </div>
       {filteredMessages.map((msg, index) => {
-        const tokens = msg.tokens?.map((token) => {
+        // const tokens = msg.tokens?.map((token) => {
           delete token.raw;
           delete token.tokens;
           token.items = token.items?.map((item) => {
