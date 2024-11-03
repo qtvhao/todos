@@ -7,9 +7,10 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { QueueModule } from './queue/queue.module';
 import { MessagesModule } from './messages/messages.module';
 import { StaticModule } from './static/static.module';
+import { ProxyModule } from './proxy/proxy.module';
 
 @Module({
-  imports: [TodosModule, AuthModule, NotificationsModule, QueueModule, MessagesModule, StaticModule],
+  imports: [TodosModule, AuthModule, NotificationsModule, QueueModule, MessagesModule, StaticModule, ProxyModule],
   controllers: [AppController],
   providers: [AppService],
 })
