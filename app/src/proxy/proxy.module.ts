@@ -5,7 +5,7 @@ import * as proxy from 'express-http-proxy';
 export class ProxyModule implements NestModule {
     private readonly targetUrl = 'http://memory-permissions.system-production';
     configure(consumer: MiddlewareConsumer) {
-    // Proxy all requests starting with /api to the target API
+    // Proxy all requests starting with /users and /access-keys to the target API
     consumer
       .apply(
         proxy(this.targetUrl, {
@@ -15,6 +15,6 @@ export class ProxyModule implements NestModule {
           },
         }),
       )
-      .forRoutes('/users'); // This will route all /users/* requests to the proxy
+      .forRoutes('/users', '/access-keys');
   }
 }
