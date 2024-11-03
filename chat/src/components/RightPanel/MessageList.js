@@ -43,16 +43,15 @@ const MessageList = () => {
       </div>
       {filteredMessages.map((msg, index) => {
         // const tokens = msg.tokens?.map((token) => {
-          delete token.raw;
-          delete token.tokens;
-          token.items = token.items?.map((item) => {
-            delete item.raw;
-            delete item.tokens;
-            return item;
-          });
-
-          return token;
-        });
+        //   delete token.raw;
+        //   delete token.tokens;
+        //   token.items = token.items?.map((item) => {
+        //     delete item.raw;
+        //     delete item.tokens;
+        //     return item;
+        //   });
+        //   return token;
+        // });
         return (
           <div key={index}>
             <div className="message-item" style={{ overflowY: 'auto', textWrap: 'wrap' }}>
