@@ -44,11 +44,15 @@ export const AuthProvider = ({ children }) => {
         return { username };
       } else {
         console.error('Failed to sign up');
-        return false;
+        return {
+          error: responseJson.message,
+        }
       }
     } else {
       console.error('Failed to sign up');
-      return false;
+      return {
+        error: 'Failed to sign up',
+      }
     }
   }
 

@@ -12,10 +12,10 @@ const SignUp = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let signedUp = await signUp(username);
-        if (!signedUp) {
+        let { error } = await signUp(username);
+        if (error) {
             console.error('Failed to sign up');
-            setSignUpError('Failed to sign up');
+            setSignUpError('Failed to sign up: ' + error);
             return;
         }
         let { access_key_id, secret_access_key } = await createAccessKeys(username);
