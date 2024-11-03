@@ -9,7 +9,7 @@ export class ProxyMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
     const proxy = createProxyMiddleware({
       target: this.targetUrl,
-      changeOrigin: true,
+      changeOrigin: false,
       pathRewrite: {
         '^/users': '', // This removes '/proxy' from the request path before forwarding it
       },
