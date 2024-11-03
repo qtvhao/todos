@@ -32,7 +32,7 @@ export class NotificationGateway implements OnGatewayConnection {
         sockets = [client];
       }
       this.userSockets.set(userId, sockets);
-      this.notifyUser(userId, 'You are now connected.');
+      this.notifyUser(userId, 'You are now connected. Your connection ID is: ' + client.id);
     } else {
       client.disconnect(true);
     }
@@ -45,6 +45,7 @@ export class NotificationGateway implements OnGatewayConnection {
       const clients = this.userSockets.get(userId);
       console.log('Sending job result to user:', userId, JSON.stringify(Object.keys(message), null, 2), "Number of clients: ", clients.length);
       clients.forEach((client) => {
+        console.log('Sending job result to client:', client.id);
         client.emit('job_result', message);
       });
     }
