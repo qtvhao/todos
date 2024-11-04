@@ -2,14 +2,13 @@
 import React from 'react';
 import { AuthProvider, useAuth } from '../../context/AuthContext';
 import { MessageProvider } from '../../context/MessageContext';
-import useWebSocket from '../../hooks/useWebSocket';
 import Login from '../Login/Login';
 import RightPanel from '../RightPanel/RightPanel';
 import LeftSidebar from '../LeftSidebar/LeftSidebar';
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { WS_URL } from '../../constants';
 import SignUp from '../SignUp/SignUp';
+import WebSocketProvider from './WebSocketProvider';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -18,7 +17,6 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const AppContent = () => {
-  useWebSocket(WS_URL);
   return (
       <Routes>
         <Route
@@ -33,10 +31,12 @@ const AppContent = () => {
           path="/chat"
           element={
             <ProtectedRoute>
-              <div className="app">
-                <LeftSidebar />
-                <RightPanel />
-              </div>
+              <WebSocketProvider>
+                <div className="app">
+                  <LeftSidebar />
+                  <RightPanel />
+                </div>
+              </WebSocketProvider>
             </ProtectedRoute>
           }
         />
