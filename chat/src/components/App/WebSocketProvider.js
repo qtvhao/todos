@@ -47,6 +47,7 @@ const WebSocketProvider = ({ children }) => {
           if (reason === 'io server disconnect') {
             console.log('Disconnected:', reason);
             alert('Disconnected from server. Please signup again.');
+            window.location.href = '/signup';
           }
           console.log('Disconnected:', reason);
         });
