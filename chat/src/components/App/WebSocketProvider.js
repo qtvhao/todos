@@ -43,6 +43,13 @@ const WebSocketProvider = ({ children }) => {
             timestamp: Date.now()
           });
         });
+        socket.on('disconnect', (reason) => {
+          if (reason === 'io server disconnect') {
+            console.log('Disconnected:', reason);
+            alert('Disconnected from server. Please signup again.');
+          }
+          console.log('Disconnected:', reason);
+        });
         setWs(socket);
         return () => {
           socket.disconnect();
