@@ -10,7 +10,7 @@ export const WebSocketContext = createContext(null);
 const WebSocketProvider = ({ children }) => {
   const { auth } = useAuth();
   const [ws, setWs] = useState(null);
-  const [wsAlignToken, setWsAlignToken] = useState(null);
+  const [, setWsAlignToken] = useState(null);
 
   const { 
     addAssistantMessage,
