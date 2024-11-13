@@ -17,9 +17,10 @@ export const fetchMessages = async () => {
   await tx.done;
   return messages;
 };
-export const alignTokens = async (flat, audioUrl) => {
+export const alignTokens = async (flat, audioUrl, activeThreadId) => {
   const response = await axios.post(ALIGN_TOKENS_ENDPOINT, {
     tokens_texts: flat,
+    activeThreadId,
     audio_file: audioUrl
   });
   console.log(response);

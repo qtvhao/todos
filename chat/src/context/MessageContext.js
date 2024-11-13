@@ -47,38 +47,8 @@ export const MessageProvider = ({ children }) => {
   }
   // Hàm mới để gọi alignTokens API và lưu kết quả
   const handleAlignTokens = async (tokens, audioUrl, activeThreadId) => {
-    try {
-      let flat = flatten(tokens);
-      const result = await alignTokens(flat, audioUrl);
-      let newMessage
-      //  = {
-      //   text: result.text, // Giả sử response có trường `text`
-      //   sender: 'Assistant',
-      //   threadId: activeThreadId,
-      //   timestamp: Date.now(),
-      //   audioFile: result.audioFile // Nếu có audio URL trong response
-      // };
-      let text = `curl 'https://http-stablize-partnerapis-production-80.schnworks.com/stablize' \
--X 'POST' \
--H 'Accept: application/json, text/plain, */*' \
--H 'Content-Type: application/json' \
---data-binary $'${JSON.stringify({
-  "tokens_texts": flat,
-  "audio_file": audioUrl
-})}'`;
-      newMessage = {
-        audioFile: null,
-        formatted: null,
-        tokens: result,
-        text,
-        sender: 'Stablizer',
-        threadId: activeThreadId,
-        timestamp: Date.now()
-      };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    } catch (error) {
-      console.error("Error aligning tokens:", error);
-    }
+    let flat = flatten(tokens);
+    await alignTokens(flat, audioUrl, activeThreadId);
   };
 
 
