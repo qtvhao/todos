@@ -107,6 +107,7 @@ const WebSocketProvider = ({ children }) => {
         socket.disconnect();
       };
     }
+    // eslint-disable-next-line
   }, [auth]);
 
   return (
