@@ -1,6 +1,6 @@
 import { openDB } from 'idb';
 import axios from 'axios';
-import { SEND_MESSAGE_ENDPOINT } from '../constants';
+import { SEND_MESSAGE_ENDPOINT, ALIGN_TOKENS_ENDPOINT } from '../constants';
 import Cookies from 'js-cookie';
 
 const dbPromise = openDB('chat-db', 1, {
@@ -16,6 +16,15 @@ export const fetchMessages = async () => {
   const messages = await store.getAll();
   await tx.done;
   return messages;
+};
+export const alignTokens = async (flat, audioUrl) => {
+  const response = await axios.post(ALIGN_TOKENS_ENDPOINT, {
+    tokens_texts: flat,
+    audio_file: audioUrl
+  });
+  console.log(response);
+
+  return response.data; // Giả sử API trả về dữ liệu cần thiết để lưu vào message
 };
 
 export const sendMessage = async (message) => {

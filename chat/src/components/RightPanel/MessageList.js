@@ -1,5 +1,5 @@
-// src/components/RightPanel/MessageList.js
 import React from 'react';
+import { useCallback } from 'react';
 import { useMessages } from '../../context/MessageContext';
 import './MessageList.css';
 import Cookies from 'js-cookie';
@@ -7,7 +7,7 @@ import { WS_URL } from '../../constants';
 import { Markdown } from './Markdown';
 
 const MessageList = () => {
-  const { messages, activeThreadId } = useMessages();
+  const { messages, activeThreadId, handleAlignTokens } = useMessages();
 
   const filteredMessages = messages.filter((msg) => msg.threadId === activeThreadId);
   const token = Cookies.get('token');
@@ -17,6 +17,13 @@ const MessageList = () => {
     secretAccessKey
   };
   const opts = { query };
+
+  // Hàm xử lý sự kiện click của button "Align tokens"
+  const alignTokensAndSaveMessage = useCallback(() => {
+    const tokens = filteredMessages.find(msg => msg.tokens)?.tokens; // Lấy tokens đầu tiên
+    const audioUrl = filteredMessages.find(msg => msg.audioFile)?.audioFile; // Lấy URL audio đầu tiên
+    handleAlignTokens(tokens, audioUrl);
+  }, [filteredMessages, handleAlignTokens]);
 
   return (
     <div className="message-list">
@@ -77,6 +84,9 @@ const MessageList = () => {
           </div>
         );
       })}
+      <button onClick={alignTokensAndSaveMessage} disabled={!activeThreadId}>
+        Align tokens
+      </button>
     </div>
   );
 };
