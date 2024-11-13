@@ -1,7 +1,8 @@
 // src/context/MessageContext.js
+import removeMd from 'remove-markdown';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useAuth } from './AuthContext';
-import { fetchMessages, addAssistantMessage } from '../api/api';
+import { fetchMessages, addAssistantMessage, alignTokens } from '../api/api';
 
 const MessageContext = createContext();
 
@@ -24,6 +25,44 @@ export const MessageProvider = ({ children }) => {
     await doFetchMessages();
     setActiveThreadId(message.threadId);
   };
+  function flatten(tokens) {
+    return tokens.map(token => {
+      if (token.type === 'list') {
+        return token.items.map(item => item.text);
+      }
+      if (token.type === 'list_item') {
+        return token.text;
+      }
+      if (token.type === 'paragraph') {
+        return token.text;
+      }
+      if (token.type === 'heading') {
+        return token.text;
+      }
+      if (token.type === 'space') {
+        return '';
+      }
+      return token.text;
+    }).flat().filter(str => str !== '').map(str => removeMd(str));
+  }
+  // Hàm mới để gọi alignTokens API và lưu kết quả
+  const handleAlignTokens = async (tokens, audioUrl) => {
+    try {
+      const result = await alignTokens(flatten(tokens), audioUrl);
+      const newMessage = {
+        text: result.text, // Giả sử response có trường `text`
+        sender: 'Assistant',
+        threadId: activeThreadId,
+        timestamp: Date.now(),
+        audioFile: result.audioFile // Nếu có audio URL trong response
+      };
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    } catch (error) {
+      console.error("Error aligning tokens:", error);
+    }
+  };
+
+
   const doFetchMessages = async () => {
     fetchMessages().then((data) => {
       setMessages((prevMessages) => {
@@ -38,7 +77,7 @@ export const MessageProvider = ({ children }) => {
 
   return (
     <MessageContext.Provider
-      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn }}
+      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn, handleAlignTokens }}
     >
       {children}
     </MessageContext.Provider>
