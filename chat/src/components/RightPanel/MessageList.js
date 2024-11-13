@@ -22,8 +22,8 @@ const MessageList = () => {
   const alignTokensAndSaveMessage = useCallback(() => {
     const tokens = filteredMessages.find(msg => msg.tokens)?.tokens; // Lấy tokens đầu tiên
     const audioUrl = filteredMessages.find(msg => msg.audioFile)?.audioFile; // Lấy URL audio đầu tiên
-    handleAlignTokens(tokens, audioUrl);
-  }, [filteredMessages, handleAlignTokens]);
+    handleAlignTokens(tokens, audioUrl, activeThreadId);
+  }, [filteredMessages, handleAlignTokens, activeThreadId]);
 
   return (
     <div className="message-list">
