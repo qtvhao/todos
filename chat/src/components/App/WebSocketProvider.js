@@ -21,6 +21,34 @@ const WebSocketProvider = ({ children }) => {
         socket.on('notification', (message) => {
           console.log('Received message:', message);
         });
+        socket.on('aligned_tokens', (message) => {
+          message = JSON.parse(message);
+          console.log('Received message:', Object.keys(message));
+          let flat = message.flat;
+          let audioUrl = message.audioUrl;
+          let threadId = message.threadId;
+          let result = message.result;
+          let payload = {
+            "tokens_texts": flat,
+            "audio_file": audioUrl,
+          };
+          let text = `curl 'https://http-stablize-partnerapis-production-80.schnworks.com/stablize' \
+-X 'POST' \
+-H 'Accept: application/json' \
+-H 'Content-Type: application/json' \
+--data-binary $'${JSON.stringify(payload)}'`;
+          let newMessage = {
+            audioFile: null,
+            formatted: null,
+            tokens: result,
+            text,
+            sender: 'Stablizer',
+            threadId,
+            timestamp: Date.now()
+          };
+          console.log('New message (aligned_tokens):', newMessage);
+          addAssistantMessage(newMessage);
+        });
         socket.on('job_result', (message) => {
           message = JSON.parse(message);
           console.log('Received message:', Object.keys(message));
