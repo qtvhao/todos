@@ -18,19 +18,27 @@ export const fetchMessages = async () => {
   return messages;
 };
 export const alignTokens = async (flat, audioUrl, activeThreadId) => {
+  const [accessKeyId, secretAccessKey] = getAccessKeyPair();
   const response = await axios.post(ALIGN_TOKENS_ENDPOINT, {
-    tokens_texts: flat,
-    activeThreadId,
-    audio_file: audioUrl
+    accessKeyId,
+    secretAccessKey,
+    jobData: {
+      tokens_texts: flat,
+      activeThreadId,
+      audio_file: audioUrl
+    }
   });
   console.log(response);
 
   return response.data; // Giả sử API trả về dữ liệu cần thiết để lưu vào message
 };
-
-export const sendMessage = async (message) => {
+function getAccessKeyPair() {
   const token = Cookies.get('token');
   const [accessKeyId, secretAccessKey] = token.split(':');
+  return [accessKeyId, secretAccessKey];
+}
+export const sendMessage = async (message) => {
+  const [accessKeyId, secretAccessKey] = getAccessKeyPair();
   const jobData = {
     format: 'text-with-audio',
     text: message,
