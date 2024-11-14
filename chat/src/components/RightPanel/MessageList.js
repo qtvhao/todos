@@ -85,7 +85,7 @@ const MessageList = () => {
         );
       })}
       <button onClick={alignTokensAndSaveMessage} disabled={!activeThreadId}>
-        Align tokens
+        Transcribe
       </button>
     </div>
   );
