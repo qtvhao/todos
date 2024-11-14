@@ -90,13 +90,17 @@ const WebSocketProvider = ({ children }) => {
 -H 'Accept: application/json' \
 -H 'Content-Type: application/json' \
 --data-binary $'${JSON.stringify(payload)}'`;
+        let {
+          active_thread_id,
+          tokens,
+        } = result;
         let newMessage = {
           audioFile: null,
           formatted: null,
-          tokens: result,
+          tokens,
           text,
           sender: 'Stablizer',
-          threadId,
+          threadId: active_thread_id,
           timestamp: Date.now()
         };
         console.log('New message (aligned_tokens):', newMessage);
