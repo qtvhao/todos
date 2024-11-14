@@ -78,9 +78,8 @@ const WebSocketProvider = ({ children }) => {
         message = JSON.parse(message);
         console.log('Received message:', Object.keys(message));
         let flat = message.flat;
-        let audioUrl = message.audioUrl;
-        let threadId = message.threadId;
         let result = message.result;
+        let audioUrl = result.audio_url;
         let payload = {
           "tokens_texts": flat,
           "audio_file": audioUrl,
