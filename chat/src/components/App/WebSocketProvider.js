@@ -77,9 +77,9 @@ const WebSocketProvider = ({ children }) => {
       socket.on('job_result', (message) => {
         message = JSON.parse(message);
         console.log('Received message:', Object.keys(message));
-        let flat = message.flat;
         let result = message.result;
         let audioUrl = result.audio_url;
+        let flat = result.flat;
         let payload = {
           "tokens_texts": flat,
           "audio_file": audioUrl,
