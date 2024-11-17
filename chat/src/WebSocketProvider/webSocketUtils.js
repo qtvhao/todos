@@ -8,16 +8,16 @@ export const setupWebSocket = (url, token, eventHandlers) => {
   return socket;
 };
 
-export const reconnectWebSocket = (url, token, eventHandlers, retries = 5) => {
-  let attempt = 0;
-  const connect = () => {
-    const socket = setupWebSocket(url, token, eventHandlers);
-    socket.on('disconnect', (reason) => {
-      if (attempt < retries) {
-        setTimeout(() => connect(), Math.pow(2, attempt++) * 1000); // Exponential backoff
-      }
-    });
-    return socket;
-  };
-  return connect();
-};
+// export const reconnectWebSocket = (url, token, eventHandlers, retries = 5) => {
+//   let attempt = 0;
+//   const connect = () => {
+//     const socket = setupWebSocket(url, token, eventHandlers);
+//     socket.on('disconnect', (reason) => {
+//       if (attempt < retries) {
+//         setTimeout(() => connect(), Math.pow(2, attempt++) * 1000); // Exponential backoff
+//       }
+//     });
+//     return socket;
+//   };
+//   return connect();
+// };
