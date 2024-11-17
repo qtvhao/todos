@@ -8,7 +8,7 @@ import LeftSidebar from '../LeftSidebar/LeftSidebar';
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import SignUp from '../SignUp/SignUp';
-import WebSocketProvider from './WebSocketProvider';
+import WebSocketProvider from '../../WebSocketProvider/WebSocketProvider';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children }) => {
