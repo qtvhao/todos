@@ -5,6 +5,7 @@ import { connectWebSocket } from '../../services/webSocketService';
 import { WS_URL, STATIC_URL, WS_ALIGN_TOKEN_URL, ALIGN_TOKENS_ENDPOINT } from '../../constants';
 import { useMessages } from '../../context/MessageContext';
 import { setupWebSocket } from '../../WebSocketProvider/webSocketUtils'
+import { handleNotification, handleDisconnect } from '../../WebSocketProvider/webSocketHandlers';
 
 export const WebSocketContext = createContext(null);
 
@@ -20,9 +21,7 @@ const WebSocketProvider = ({ children }) => {
   useEffect(() => {
     if (auth) {
         const mainSocket = setupWebSocket(WS_URL, auth.token, {
-            notification: (message) => {
-                console.log('Received message:', message);
-            },
+            notification: handleNotification,
             job_result: (message) => {
                 message = JSON.parse(message);
                 console.log('Received message:', Object.keys(message));
@@ -45,14 +44,7 @@ const WebSocketProvider = ({ children }) => {
                   timestamp: Date.now()
                 });
             },
-            disconnect: (reason) => {
-                if (reason === 'io server disconnect') {
-                  console.log('Disconnected:', reason);
-                  alert('Disconnected from server. Please signup again.');
-                  window.location.href = '/signup';
-                }
-                console.log('Disconnected:', reason);
-              },
+            disconnect: handleDisconnect,
         });
         setWs(mainSocket);
         return () => {
