@@ -1,6 +1,6 @@
 import { openDB } from 'idb';
 import axios from 'axios';
-import { SEND_MESSAGE_ENDPOINT, ALIGN_TOKENS_ENDPOINT } from '../constants';
+import { SEND_MESSAGE_ENDPOINT, ALIGN_TOKENS_ENDPOINT, TRANSLATE_TO_ENGLISH_ENDPOINT } from '../constants';
 import Cookies from 'js-cookie';
 
 const dbPromise = openDB('chat-db', 1, {
@@ -18,10 +18,8 @@ export const fetchMessages = async () => {
   return messages;
 };
 export const alignTokens = async (flat, audioUrl, activeThreadId) => {
-  const [accessKeyId, secretAccessKey] = getAccessKeyPair();
   const response = await axios.post(ALIGN_TOKENS_ENDPOINT, {
-    accessKeyId,
-    secretAccessKey,
+    ...getAccessKeyPair(),
     jobData: {
       tokens_texts: flat,
       activeThreadId,
@@ -32,10 +30,26 @@ export const alignTokens = async (flat, audioUrl, activeThreadId) => {
 
   return response.data; // Giả sử API trả về dữ liệu cần thiết để lưu vào message
 };
+export const translateTokensToEnglish = async (flat, activeThreadId) => {
+  const response = await axios.post(TRANSLATE_TO_ENGLISH_ENDPOINT, {
+    ...getAccessKeyPair(),
+    jobData: {
+      tokens_texts: flat,
+      activeThreadId,
+    }
+  });
+  console.log(response);
+
+  return response.data; // Giả sử API trả về dữ liệu cần thiết để lưu vào message
+}; // Hàm mới để gọi alignTokens API và lưu kết quả
 function getAccessKeyPair() {
   const token = Cookies.get('token');
   const [accessKeyId, secretAccessKey] = token.split(':');
-  return [accessKeyId, secretAccessKey];
+
+  return {
+    accessKeyId,
+    secretAccessKey,
+  }
 }
 export const sendMessage = async (message) => {
   const [accessKeyId, secretAccessKey] = getAccessKeyPair();

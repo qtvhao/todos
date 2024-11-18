@@ -2,7 +2,7 @@
 import removeMd from 'remove-markdown';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useAuth } from './AuthContext';
-import { fetchMessages, addAssistantMessage, alignTokens } from '../api/api';
+import { fetchMessages, addAssistantMessage, translateTokensToEnglish, alignTokens } from '../api/api';
 
 const MessageContext = createContext();
 
@@ -54,6 +54,7 @@ export const MessageProvider = ({ children }) => {
   const handleTranslateTokensToEnglish = async (tokens, activeThreadId) => {
     let flat = flatten(tokens);
     console.log('flat:', flat);
+    await translateTokensToEnglish(flat, activeThreadId);
   };
 
 
