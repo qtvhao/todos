@@ -51,6 +51,11 @@ export const MessageProvider = ({ children }) => {
     await alignTokens(flat, audioUrl, activeThreadId);
   };
 
+  const handleTranslateTokensToEnglish = async (tokens, activeThreadId) => {
+    let flat = flatten(tokens);
+    console.log('flat:', flat);
+  };
+
 
   const doFetchMessages = async () => {
     fetchMessages().then((data) => {
@@ -66,7 +71,7 @@ export const MessageProvider = ({ children }) => {
 
   return (
     <MessageContext.Provider
-      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn, handleAlignTokens }}
+      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn, handleTranslateTokensToEnglish, handleAlignTokens }}
     >
       {children}
     </MessageContext.Provider>

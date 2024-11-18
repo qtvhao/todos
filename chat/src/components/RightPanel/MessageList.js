@@ -7,7 +7,7 @@ import { WS_URL } from '../../constants';
 import { Markdown } from './Markdown';
 
 const MessageList = () => {
-  const { messages, activeThreadId, handleAlignTokens } = useMessages();
+  const { messages, activeThreadId, handleAlignTokens, handleTranslateTokensToEnglish } = useMessages();
 
   const filteredMessages = messages.filter((msg) => msg.threadId === activeThreadId);
   const token = Cookies.get('token');
@@ -25,7 +25,11 @@ const MessageList = () => {
     handleAlignTokens(tokens, audioUrl, activeThreadId);
   }, [filteredMessages, handleAlignTokens, activeThreadId]);
 
-  const translateMessagesToEnglish = useCallback(() => {}, []);
+  const translateMessagesToEnglish = useCallback(() => {
+    const tokens = filteredMessages.find(msg => msg.tokens)?.tokens; // Lấy tokens đầu tiên
+    handleTranslateTokensToEnglish(tokens, activeThreadId);
+    
+  }, [filteredMessages, handleTranslateTokensToEnglish, activeThreadId]);
 
   return (
     <div className="message-list">
@@ -100,7 +104,7 @@ const MessageList = () => {
             onClick={translateMessagesToEnglish}
             disabled={filteredMessages.length === 0}
           >
-            Translate to English
+            Translate to English (under construction)
           </button>
         </div>
       </div>

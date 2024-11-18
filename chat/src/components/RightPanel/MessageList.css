@@ -14,13 +14,14 @@
   margin: 10px auto; /* Adds space above the button and centers it */
   
   /* Sizing */
-  width: 150px; /* Fixed width for uniformity */
+  flex: 1;
+  max-width: 250px; /* Fixed width for uniformity */
   padding: 10px 15px; /* Comfortable click/tap area */
 
   /* Styling */
   background-color: #007bff; /* Primary color (blue) */
   color: #fff; /* White text for contrast */
-  font-size: 16px; /* Readable text */
+  font-size: 14px; /* Readable text */
   font-weight: bold; /* Makes the label stand out */
   border: none; /* Removes default border */
   border-radius: 5px; /* Slightly rounded corners for modern look */
@@ -42,11 +43,9 @@
 .translate-button {
   display: block;
   margin: 10px auto;
-  width: 150px;
   padding: 10px 15px;
   background-color: #28a745; /* Green background */
   color: #fff; /* White text */
-  font-size: 16px;
   font-weight: bold;
   border: none;
   border-radius: 5px;
@@ -65,17 +64,12 @@
 }
 
 .button-group {
-  max-width: 320px;
+  max-width: 520px;
   display: flex; /* Use Flexbox for horizontal layout */
   justify-content: center; /* Center the buttons */
   gap: 10px; /* Add space between buttons */
 }
 
-.transcribe-button,
-.translate-button {
-  flex: 1; /* Ensure buttons have equal width (optional) */
-  max-width: 150px; /* Maintain consistent button size */
-}
 .message-list {
   position: relative;
   display: flex;
