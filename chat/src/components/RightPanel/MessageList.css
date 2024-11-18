@@ -8,7 +8,7 @@
   margin-bottom: 5px;
 }
 
-.transcribe-button {
+.transcribe-button, .translate-button {
   /* Positioning */
   display: block; /* Ensures it's centered and spans full width if needed */
   margin: 10px auto; /* Adds space above the button and centers it */
@@ -30,14 +30,51 @@
   cursor: pointer; /* Pointer cursor to indicate interaction */
   transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth effects */
 }
-.transcribe-button:hover {
+.transcribe-button:hover, .translate-button:hover {
   background-color: #0056b3; /* Darker blue for hover */
   transform: translateY(-2px); /* Slight lift effect */
 }
-.transcribe-button:disabled {
+.transcribe-button:disabled, .translate-button:disabled {
   background-color: #d6d6d6; /* Greyed out when disabled */
   cursor: not-allowed; /* Indicates non-clickable state */
   color: #999; /* Faded text color */
+}
+.translate-button {
+  display: block;
+  margin: 10px auto;
+  width: 150px;
+  padding: 10px 15px;
+  background-color: #28a745; /* Green background */
+  color: #fff; /* White text */
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.translate-button:hover {
+  background-color: #218838; /* Darker green for hover */
+  transform: translateY(-2px);
+}
+.translate-button:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+  color: #999;
+}
+
+.button-group {
+  max-width: 320px;
+  display: flex; /* Use Flexbox for horizontal layout */
+  justify-content: center; /* Center the buttons */
+  gap: 10px; /* Add space between buttons */
+}
+
+.transcribe-button,
+.translate-button {
+  flex: 1; /* Ensure buttons have equal width (optional) */
+  max-width: 150px; /* Maintain consistent button size */
 }
 .message-list {
   position: relative;
