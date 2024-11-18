@@ -104,7 +104,7 @@ const MessageList = () => {
             onClick={translateMessagesToEnglish}
             disabled={filteredMessages.length === 0}
           >
-            Translate to English (under construction)
+            Translate to English <br/> (under construction)
           </button>
         </div>
       </div>
