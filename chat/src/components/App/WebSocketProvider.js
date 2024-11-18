@@ -2,7 +2,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { connectWebSocket } from '../../services/webSocketService';
-import { WS_URL, WS_ALIGN_TOKEN_URL, ALIGN_TOKENS_ENDPOINT } from '../../constants';
+import { WS_URL, ALIGN_TOKENS_ENDPOINT, WS_ALIGN_TOKEN_URL, } from '../../constants';
 import { useMessages } from '../../context/MessageContext';
 import { setupWebSocket } from '../../WebSocketProvider/webSocketUtils'
 import { handleNotification, handleJobResult, handleDisconnect } from '../../WebSocketProvider/webSocketHandlers';

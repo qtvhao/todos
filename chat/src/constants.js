@@ -7,4 +7,7 @@ export const WS_URL = API_URL;
 export const STATIC_URL = process.env.REACT_APP_API_URL + '/static/';
 
 export const ALIGN_TOKENS_ENDPOINT = `https://http-align-partnerapis-production-80.schnworks.com/todos`;
-export const WS_ALIGN_TOKEN_URL = process.env.REACT_APP_WS_ALIGN_TOKEN_URL || 'http://localhost:3000';
+export const WS_ALIGN_TOKEN_URL = `https://http-align-partnerapis-production-80.schnworks.com/`
+
+export const TRANSLATE_TO_ENGLISH_ENDPOINT = `https://http-translate-to-english-partnerapis-production-80.schnworks.com/todos`;
+export const WS_TRANSLATE_TO_ENGLISH_URL = process.env.REACT_APP_WS_TRANSLATE_TO_ENGLISH_URL || 'http://localhost:3000';
