@@ -56,6 +56,7 @@ export const MessageProvider = ({ children }) => {
       return [];
     }
     let headings = tokens.filter(token => token.type === 'heading');
+    headings = headings.map(heading => heading.text);
     console.log('headings:', headings);
     
     let remainingTokens = [];
