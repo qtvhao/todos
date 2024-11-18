@@ -25,15 +25,6 @@
   background-color: #f9fafb;
 }
 
-/* Message List Styling */
-.message-list {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
-}
-
 /* Message Item Styling */
 .message-item {
   margin-bottom: 15px;

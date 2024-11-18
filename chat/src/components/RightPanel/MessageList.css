@@ -1,9 +1,64 @@
 .message-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-  }
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.message-item {
+  margin-bottom: 5px;
+}
+
+.transcribe-button {
+  /* Positioning */
+  display: block; /* Ensures it's centered and spans full width if needed */
+  margin: 10px auto; /* Adds space above the button and centers it */
   
-  .message-item {
-    margin-bottom: 5px;
-  }
+  /* Sizing */
+  width: 150px; /* Fixed width for uniformity */
+  padding: 10px 15px; /* Comfortable click/tap area */
+
+  /* Styling */
+  background-color: #007bff; /* Primary color (blue) */
+  color: #fff; /* White text for contrast */
+  font-size: 16px; /* Readable text */
+  font-weight: bold; /* Makes the label stand out */
+  border: none; /* Removes default border */
+  border-radius: 5px; /* Slightly rounded corners for modern look */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+
+  /* Hover Effects */
+  cursor: pointer; /* Pointer cursor to indicate interaction */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth effects */
+}
+.transcribe-button:hover {
+  background-color: #0056b3; /* Darker blue for hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+.transcribe-button:disabled {
+  background-color: #d6d6d6; /* Greyed out when disabled */
+  cursor: not-allowed; /* Indicates non-clickable state */
+  color: #999; /* Faded text color */
+}
+.message-list {
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Stack messages vertically */
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 20px; /* Ensure enough space for the button */
+}
+
+/* Message List Styling */
+.message-list {
+  flex: 1;
+  padding: 10px 20px;
+  overflow-y: auto;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.button-container {
+  position: sticky; /* Keeps the button visible while scrolling */
+  bottom: 10px; /* Position near the bottom */
+  text-align: center; /* Centers the button in the container */
+}
