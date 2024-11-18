@@ -30,12 +30,13 @@ export const alignTokens = async (flat, audioUrl, activeThreadId) => {
 
   return response.data; // Giả sử API trả về dữ liệu cần thiết để lưu vào message
 };
-export const translateTokensToEnglish = async (flat, activeThreadId) => {
+export const translateTokensToEnglish = async (flat, activeThreadId, headings) => {
   const response = await axios.post(TRANSLATE_TO_ENGLISH_ENDPOINT, {
     ...getAccessKeyPair(),
     jobData: {
       tokens_texts: flat,
       activeThreadId,
+      headings,
     }
   });
   console.log(response);

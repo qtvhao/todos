@@ -51,10 +51,41 @@ export const MessageProvider = ({ children }) => {
     await alignTokens(flat, audioUrl, activeThreadId);
   };
 
+  const recursiveGetHeadings = (tokens) => {
+    if (tokens.length === 0) {
+      return [];
+    }
+    let headings = tokens.filter(token => token.type === 'heading');
+    console.log('headings:', headings);
+    
+    let remainingTokens = [];
+
+    for (let i = 0; i < tokens.length; i++) {
+      let token = tokens[i];
+      if ('heading' === token.type) {
+        continue;
+      }
+      if ('space' === token.type) {
+        continue;
+      }
+      if ('list' === token.type) {
+        remainingTokens = remainingTokens.concat(token.items);
+        continue;
+      }
+      if ('paragraph' === token.type) {
+        continue;
+      }
+      console.log('token:', token);
+    }
+
+    return headings.concat(recursiveGetHeadings(remainingTokens));
+  };
+
   const handleTranslateTokensToEnglish = async (tokens, activeThreadId) => {
     let flat = flatten(tokens);
-    console.log('flat:', flat);
-    await translateTokensToEnglish(flat, activeThreadId);
+    console.log('flat:', flat, recursiveGetHeadings(tokens));
+    let headings = recursiveGetHeadings(tokens);
+    await translateTokensToEnglish(flat, activeThreadId, headings);
   };
 
 
