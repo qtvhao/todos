@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { WS_URL, WS_ALIGN_TOKEN_URL, } from '../constants';
 import { useMessages } from '../context/MessageContext';
 import { setupWebSocket } from '../WebSocketProvider/webSocketUtils'
-import { handleNotification, handleJobResult, handleDisconnect } from '../WebSocketProvider/webSocketHandlers';
+import { handleNotification, handleJobResult, handleAlignJobResult, handleDisconnect } from '../WebSocketProvider/webSocketHandlers';
 
 export const WebSocketContext = createContext(null);
 
@@ -36,7 +36,7 @@ const WebSocketProvider = ({ children }) => {
     if (auth) { //
       const alignSocket = setupWebSocket(WS_ALIGN_TOKEN_URL, auth.token, {
         notification: handleNotification,
-        job_result: (message) => { handleJobResult(message, addAssistantMessage) },
+        job_result: (message) => { handleAlignJobResult(message, addAssistantMessage) },
         disconnect: handleDisconnect
       });
       setWsAlignToken(alignSocket);
