@@ -91,6 +91,13 @@ export const MessageProvider = ({ children }) => {
       };
     })
     let headings = recursiveGetHeadings(tokens);
+
+    headings = headings.map((originalText) => {
+      return {
+        id: Math.random().toString(36).substring(7),
+        originalText,
+      };
+    });
     await translateTokensToEnglish(flat, activeThreadId, headings);
   };
 
