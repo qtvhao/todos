@@ -53,14 +53,12 @@ function getAccessKeyPair() {
   }
 }
 export const sendMessage = async (message) => {
-  const [accessKeyId, secretAccessKey] = getAccessKeyPair();
   const jobData = {
     format: 'text-with-audio',
     text: message,
   };
   const response = await axios.post(SEND_MESSAGE_ENDPOINT, {
-    accessKeyId,
-    secretAccessKey,
+    ...getAccessKeyPair(),
     jobData,
   });
   const {
