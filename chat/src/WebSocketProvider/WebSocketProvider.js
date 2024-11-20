@@ -1,10 +1,16 @@
 // src/WebSocketProvider.js
 import React, { createContext, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { WS_URL, WS_ALIGN_TOKEN_URL, } from '../constants';
+import { WS_URL, WS_ALIGN_TOKEN_URL, WS_TRANSLATE_TO_ENGLISH_URL, } from '../constants';
 import { useMessages } from '../context/MessageContext';
 import { setupWebSocket } from '../WebSocketProvider/webSocketUtils'
-import { handleNotification, handleJobResult, handleAlignJobResult, handleDisconnect } from '../WebSocketProvider/webSocketHandlers';
+import { 
+  handleNotification, 
+  handleJobResult, 
+  handleAlignJobResult, 
+  handleTranslateToEnglishJobResult, 
+  handleDisconnect 
+} from '../WebSocketProvider/webSocketHandlers';
 
 export const WebSocketContext = createContext(null);
 
@@ -16,6 +22,20 @@ const WebSocketProvider = ({ children }) => {
   const { 
     addAssistantMessage,
   } = useMessages();
+
+  useEffect(() => {
+    if (auth) {
+      const translateSocket = setupWebSocket(WS_TRANSLATE_TO_ENGLISH_URL, auth.token, {
+        notification: handleNotification,
+        job_result: (message) => { handleTranslateToEnglishJobResult(message, addAssistantMessage) },
+        disconnect: handleDisconnect,
+      });
+      return () => {
+        translateSocket.disconnect();
+      };
+    }
+    // eslint-disable-next-line
+  }, [auth]);
 
   useEffect(() => {
     if (auth) {

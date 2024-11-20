@@ -1,9 +1,18 @@
 import { STATIC_URL } from "../constants";
-import { ALIGN_TOKENS_ENDPOINT } from '../constants';
+import { ALIGN_TOKENS_ENDPOINT,  } from '../constants';
 
 export const handleNotification = (message) => {
   console.log('Received notification:', message);
 };
+
+export const handleTranslateToEnglishJobResult = (message, addAssistantMessage) => {
+  try {
+    const parsed = JSON.parse(message);
+    console.log('Parsed:', parsed);
+  }catch (error) {
+    console.error('Error handling job_result:', error);
+  }
+}
 
 export const handleJobResult = (message, addAssistantMessage) => {
   try {
