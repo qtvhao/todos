@@ -84,7 +84,12 @@ export const MessageProvider = ({ children }) => {
 
   const handleTranslateTokensToEnglish = async (tokens, activeThreadId) => {
     let flat = flatten(tokens);
-    console.log('flat:', flat, recursiveGetHeadings(tokens));
+    flat = flat.map((originalText) => {
+      return {
+        id: Math.random().toString(36).substring(7),
+        originalText,
+      };
+    })
     let headings = recursiveGetHeadings(tokens);
     await translateTokensToEnglish(flat, activeThreadId, headings);
   };
