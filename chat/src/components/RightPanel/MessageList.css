@@ -15,7 +15,7 @@
   
   /* Sizing */
   flex: 1;
-  max-width: 250px; /* Fixed width for uniformity */
+  max-width: 180px; /* Fixed width for uniformity */
   padding: 10px 15px; /* Comfortable click/tap area */
 
   /* Styling */
@@ -64,7 +64,7 @@
 }
 
 .button-group {
-  max-width: 520px;
+  max-width: 380px;
   display: flex; /* Use Flexbox for horizontal layout */
   justify-content: center; /* Center the buttons */
   gap: 10px; /* Add space between buttons */
