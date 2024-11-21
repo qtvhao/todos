@@ -1,5 +1,5 @@
 import { STATIC_URL } from "../constants";
-import { ALIGN_TOKENS_ENDPOINT,  } from '../constants';
+import { ALIGN_TOKENS_ENDPOINT, TRANSLATE_TO_ENGLISH_ENDPOINT, } from '../constants';
 
 export const handleNotification = (message) => {
   console.log('Received notification:', message);
@@ -9,6 +9,37 @@ export const handleTranslateToEnglishJobResult = (message, addAssistantMessage) 
   try {
     const parsed = JSON.parse(message);
     console.log('Parsed:', parsed);
+    const { job_id, result } = parsed;
+    let {
+      processed_tokens_texts,
+      active_thread_id,
+      processed_headings,
+    } = result;
+    console.log('Job ID:', job_id);
+    let text = `curl '${TRANSLATE_TO_ENGLISH_ENDPOINT}' \
+-X 'POST' \
+-H 'Accept: application/json' \
+-H 'Content-Type: application/json' \
+--data-binary $'${JSON.stringify({
+  tokens_texts: processed_tokens_texts.map(({ originalText }) => {return originalText}),
+})}'`;
+    
+    console.log('Processed tokens:', processed_tokens_texts);
+    console.log('Active thread id:', active_thread_id);
+    console.log('Processed headings:', processed_headings);
+    console.log('Parsed keys:', Object.keys(result));
+    let tokens = []
+      .concat(processed_headings.map((heading) => { return { ...heading, type: 'heading' } }))
+      .concat(processed_tokens_texts.map((token) => { return { ...token, type: 'token' } }));
+    addAssistantMessage({
+      audioFile: null,
+      formatted: null,
+      tokens,
+      text,
+      sender: 'Assistant',
+      threadId: active_thread_id,
+      timestamp: Date.now(),
+    });
   }catch (error) {
     console.error('Error handling job_result:', error);
   }
