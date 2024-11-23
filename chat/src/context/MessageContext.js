@@ -2,7 +2,7 @@
 import removeMd from 'remove-markdown';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useAuth } from './AuthContext';
-import { fetchMessages, addAssistantMessage, translateTokensToEnglish, alignTokens } from '../api/api';
+import { fetchMessages, addAssistantMessage, translateTokensToEnglish, alignTokens, visualizeMessages } from '../api/api';
 
 const MessageContext = createContext();
 
@@ -49,6 +49,10 @@ export const MessageProvider = ({ children }) => {
   const handleAlignTokens = async (tokens, audioUrl, activeThreadId) => {
     let flat = flatten(tokens);
     await alignTokens(flat, audioUrl, activeThreadId);
+  };
+
+  const handleVisualizeMessages = async (tokens, activeThreadId) => {
+    await visualizeMessages(tokens, activeThreadId);
   };
 
   const recursiveGetHeadings = (tokens) => {
@@ -116,7 +120,7 @@ export const MessageProvider = ({ children }) => {
 
   return (
     <MessageContext.Provider
-      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn, handleTranslateTokensToEnglish, handleAlignTokens }}
+      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn, handleTranslateTokensToEnglish, handleAlignTokens, handleVisualizeMessages }}
     >
       {children}
     </MessageContext.Provider>

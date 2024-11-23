@@ -17,6 +17,9 @@ export const fetchMessages = async () => {
   await tx.done;
   return messages;
 };
+export const visualizeMessages = async (flat, activeThreadId) => {
+  
+}; //
 export const alignTokens = async (flat, audioUrl, activeThreadId) => {
   const response = await axios.post(ALIGN_TOKENS_ENDPOINT, {
     ...getAccessKeyPair(),
