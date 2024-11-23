@@ -38,6 +38,11 @@
   background-color: #28a745; /* Primary green */
 }
 
+.visualize-button {
+  background-color: #ffc107; /* Yellow background */
+  color: #212529; /* Dark text for better contrast */
+}
+
 /* ===== Hover States ===== */
 .transcribe-button:hover {
   background-color: #0056b3; /* Darker blue */
@@ -49,6 +54,11 @@
   transform: translateY(-2px);
 }
 
+.visualize-button:hover {
+  background-color: #e0a800; /* Darker yellow */
+  transform: translateY(-2px);
+}
+
 /* ===== Disabled States ===== */
 .t-button:disabled {
   background-color: #d6d6d6; /* Greyed out */
@@ -57,7 +67,7 @@
 }
 
 .button-group {
-  max-width: 380px;
+  max-width: 580px;
   display: flex; /* Use Flexbox for horizontal layout */
   justify-content: center; /* Center the buttons */
   gap: 10px; /* Add space between buttons */

@@ -25,7 +25,11 @@ const MessageList = () => {
     handleAlignTokens(tokens, audioUrl, activeThreadId);
   }, [filteredMessages, handleAlignTokens, activeThreadId]);
 
-  const visualizeMessages = useCallback(() => {}, []);
+  const visualizeMessages = useCallback(() => {
+    // 
+    // alert('This feature is under development');
+    alert("Tính năng này đang được phát triển");
+  }, []);
 
   const translateMessagesToEnglish = useCallback(() => {
     const tokens = filteredMessages.find(msg => msg.tokens)?.tokens; // Lấy tokens đầu tiên
@@ -113,8 +117,7 @@ const MessageList = () => {
             onClick={visualizeMessages}
             disabled={filteredMessages.length === 0}
           >
-            Visualize<br/>
-            Underconstruct
+            Visualize
           </button>
         </div>
       </div>
