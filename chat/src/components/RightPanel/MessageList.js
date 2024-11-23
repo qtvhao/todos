@@ -25,6 +25,8 @@ const MessageList = () => {
     handleAlignTokens(tokens, audioUrl, activeThreadId);
   }, [filteredMessages, handleAlignTokens, activeThreadId]);
 
+  const visualizeMessages = useCallback(() => {}, []);
+
   const translateMessagesToEnglish = useCallback(() => {
     const tokens = filteredMessages.find(msg => msg.tokens)?.tokens; // Lấy tokens đầu tiên
     handleTranslateTokensToEnglish(tokens, activeThreadId);
@@ -93,18 +95,26 @@ const MessageList = () => {
       <div className="button-container">
         <div className="button-group">
           <button
-            className="transcribe-button"
+            className="t-button transcribe-button"
             onClick={alignTokensAndSaveMessage}
             disabled={!activeThreadId}
           >
             Transcribe
           </button>
           <button
-            className="translate-button"
+            className="t-button translate-button"
             onClick={translateMessagesToEnglish}
             disabled={filteredMessages.length === 0}
           >
             Translate to English
+          </button>
+          <button
+            className="t-button visualize-button"
+            onClick={visualizeMessages}
+            disabled={filteredMessages.length === 0}
+          >
+            Visualize<br/>
+            Underconstruct
           </button>
         </div>
       </div>

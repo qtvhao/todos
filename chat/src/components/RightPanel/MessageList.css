@@ -7,60 +7,53 @@
 .message-item {
   margin-bottom: 5px;
 }
-
-.transcribe-button, .translate-button {
+/* ===== Base Button Styles ===== */
+.t-button {
   /* Positioning */
-  display: block; /* Ensures it's centered and spans full width if needed */
-  margin: 10px auto; /* Adds space above the button and centers it */
-  
-  /* Sizing */
-  flex: 1;
-  max-width: 180px; /* Fixed width for uniformity */
-  padding: 10px 15px; /* Comfortable click/tap area */
-
-  /* Styling */
-  background-color: #007bff; /* Primary color (blue) */
-  color: #fff; /* White text for contrast */
-  font-size: 14px; /* Readable text */
-  font-weight: bold; /* Makes the label stand out */
-  border: none; /* Removes default border */
-  border-radius: 5px; /* Slightly rounded corners for modern look */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-
-  /* Hover Effects */
-  cursor: pointer; /* Pointer cursor to indicate interaction */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth effects */
-}
-.transcribe-button:hover, .translate-button:hover {
-  background-color: #0056b3; /* Darker blue for hover */
-  transform: translateY(-2px); /* Slight lift effect */
-}
-.transcribe-button:disabled, .translate-button:disabled {
-  background-color: #d6d6d6; /* Greyed out when disabled */
-  cursor: not-allowed; /* Indicates non-clickable state */
-  color: #999; /* Faded text color */
-}
-.translate-button {
   display: block;
   margin: 10px auto;
+
+  /* Sizing */
+  flex: 1;
+  max-width: 180px;
   padding: 10px 15px;
-  background-color: #28a745; /* Green background */
-  color: #fff; /* White text */
+
+  /* Styling */
+  font-size: 14px;
   font-weight: bold;
   border: none;
   border-radius: 5px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #fff; /* White text for contrast */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
 }
+
+/* ===== Specific Button Types ===== */
+.transcribe-button {
+  background-color: #007bff; /* Primary blue */
+}
+
+.translate-button {
+  background-color: #28a745; /* Primary green */
+}
+
+/* ===== Hover States ===== */
+.transcribe-button:hover {
+  background-color: #0056b3; /* Darker blue */
+  transform: translateY(-2px); /* Lift effect */
+}
+
 .translate-button:hover {
-  background-color: #218838; /* Darker green for hover */
+  background-color: #218838; /* Darker green */
   transform: translateY(-2px);
 }
-.translate-button:disabled {
-  background-color: #d6d6d6;
+
+/* ===== Disabled States ===== */
+.t-button:disabled {
+  background-color: #d6d6d6; /* Greyed out */
   cursor: not-allowed;
-  color: #999;
+  color: #999; /* Faded text color */
 }
 
 .button-group {
