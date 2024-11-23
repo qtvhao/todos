@@ -1,6 +1,6 @@
 import { openDB } from 'idb';
 import axios from 'axios';
-import { SEND_MESSAGE_ENDPOINT, ALIGN_TOKENS_ENDPOINT, TRANSLATE_TO_ENGLISH_ENDPOINT } from '../constants';
+import { SEND_MESSAGE_ENDPOINT, ALIGN_TOKENS_ENDPOINT, TRANSLATE_TO_ENGLISH_ENDPOINT, VISUALIZE_MESSAGES_ENDPOINT } from '../constants';
 import Cookies from 'js-cookie';
 
 const dbPromise = openDB('chat-db', 1, {
@@ -17,8 +17,15 @@ export const fetchMessages = async () => {
   await tx.done;
   return messages;
 };
-export const visualizeMessages = async (flat, activeThreadId) => {
-  
+export const visualizeMessages = async (tokens, activeThreadId) => {
+  const response = await axios.post(VISUALIZE_MESSAGES_ENDPOINT, {
+    ...getAccessKeyPair(),
+    jobData: {
+      tokens_texts: tokens,
+      activeThreadId,
+    }
+  });
+  console.log(response);
 }; //
 export const alignTokens = async (flat, audioUrl, activeThreadId) => {
   const response = await axios.post(ALIGN_TOKENS_ENDPOINT, {

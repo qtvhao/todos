@@ -7,7 +7,7 @@ import { WS_URL } from '../../constants';
 import { Markdown } from './Markdown';
 
 const MessageList = () => {
-  const { messages, activeThreadId, handleAlignTokens, handleTranslateTokensToEnglish } = useMessages();
+  const { messages, activeThreadId, handleAlignTokens, handleTranslateTokensToEnglish, handleVisualizeMessages } = useMessages();
 
   const filteredMessages = messages.filter((msg) => msg.threadId === activeThreadId);
   const token = Cookies.get('token');
@@ -29,7 +29,9 @@ const MessageList = () => {
     // 
     // alert('This feature is under development');
     alert("Tính năng này đang được phát triển");
-  }, []);
+    const tokens = filteredMessages.find(msg => msg.tokens)?.tokens; // Lấy tokens đầu tiên
+    handleVisualizeMessages(tokens, activeThreadId);
+  }, [filteredMessages, handleVisualizeMessages, activeThreadId]);
 
   const translateMessagesToEnglish = useCallback(() => {
     const tokens = filteredMessages.find(msg => msg.tokens)?.tokens; // Lấy tokens đầu tiên

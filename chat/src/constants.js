@@ -11,3 +11,6 @@ export const WS_ALIGN_TOKEN_URL = `https://http-align-partnerapis-production-80.
 
 export const TRANSLATE_TO_ENGLISH_ENDPOINT = `https://http-translate-to-english-partnerapis-production-80.schnworks.com/todos`;
 export const WS_TRANSLATE_TO_ENGLISH_URL = `https://http-translate-to-english-partnerapis-production-80.schnworks.com/`
+
+export const VISUALIZE_MESSAGES_ENDPOINT = `https://http-ws-images-partnerapis-production-80.schnworks.com/todos`;
+export const WS_VISUALIZE_MESSAGES_URL = `https://http-ws-images-partnerapis-production-80.schnworks.com/`
