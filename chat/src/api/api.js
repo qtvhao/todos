@@ -19,16 +19,7 @@ export const fetchMessages = async () => {
   await tx.done;
   return messages;
 };
-export const fetchJobLogs = async (endpoint, message) => {
-  message = JSON.parse(message);
-  let job_id = message.job_id;
-  console.log('Job ID:', job_id);
 
-  let response = await axios.get(`${endpoint}/${job_id}/logs`);
-  console.log(response);
-
-  return response.data;
-};
 export const visualizeMessages = async (tokens, activeThreadId) => {
   const openai = new OpenAI({
     dangerouslyAllowBrowser: true,

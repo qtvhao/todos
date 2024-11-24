@@ -27,7 +27,7 @@ export class TodosService {
       });
       queue.on('global:progress', (jobId: any, progress: any) => {
         console.log(`Job ${jobId} is ${progress * 100}% ready!`);
-        this.onProgress(jobId, progress);
+        this.onProgress(jobId, progress, queue);
       });
     });
     // this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
@@ -38,16 +38,20 @@ export class TodosService {
       this.logger.log('Processing job:', job.data);
       return { result: 'success' };
   }
-  onProgress(jobId: any, progress: any) {
+  async onProgress(jobId: any, progress: any, queue: Queue) {
     this.logger.log(`Job ${jobId} is ${progress}% ready!`);
     this.logger.log(this.todos);
-    const todo = this.todos.find((t) => t.job_id === Number(jobId));
+    const todo = this.todos.find((t) => t.job_id === Number(jobId) && t.queue === queue.name);
     this.logger.log('Todo:', todo);
     if (todo) {
-      this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is ${progress * 100}% ready!`);
+      this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is ${progress}% ready!`);
+      let logs = await queue.getJobLogs(jobId);
+      this.logger.log('Logs:', logs);
+      let filteredLogs = logs.split('\n').filter((l: any) => l.startsWith('WS_EVENT_'));
       this.notificationGateway.sendJobResult(todo.userId, {
         todo_id: todo.id,
         job_id: jobId,
+        logs: filteredLogs,
         progress: progress,
       }, 'job_progress');
     }    

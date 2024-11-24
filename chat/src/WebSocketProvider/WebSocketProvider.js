@@ -40,7 +40,7 @@ const WebSocketProvider = ({ children }) => {
   useEffect(() => {
     if (auth) {
       const visualizeSocket = setupWebSocket(WS_VISUALIZE_MESSAGES_URL, auth.token, {
-        notification: handleNotification,
+        // notification: handleNotification,
         disconnect: handleDisconnect,
         job_progress: (message) => { handleVisualizeJobProgress(message, addAssistantMessage) }
       });

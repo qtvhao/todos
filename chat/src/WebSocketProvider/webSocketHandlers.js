@@ -1,34 +1,12 @@
 import { STATIC_URL } from "../constants";
-import { ALIGN_TOKENS_ENDPOINT, TRANSLATE_TO_ENGLISH_ENDPOINT, } from '../constants';
-import { fetchJobLogs } from '../api/api';
+import { ALIGN_TOKENS_ENDPOINT, TRANSLATE_TO_ENGLISH_ENDPOINT } from '../constants';
 
 export const handleNotification = (message) => {
   console.log('Received notification:', message);
 };
 
-// Biến debounce để kiểm soát thời gian
-let debounceTimeout = null;
-const DEBOUNCE_DELAY = 5000; // 5 giây
-
-// Hàm debounce
-const debounceAlert = (message, fn) => {
-  if (!debounceTimeout) {
-    fn(message);
-
-    // Thiết lập debounce timeout
-    debounceTimeout = setTimeout(() => {
-      debounceTimeout = null; // Reset debounce sau 5 giây
-    }, DEBOUNCE_DELAY);
-  }
-};
-
-export const handleVisualizeJobProgress = (message, updateOrAddAssistantMessage) => {
-  debounceAlert(message, async (message) => {
-    let logs = await fetchJobLogs(message);
-    updateOrAddAssistantMessage({
-      text: logs,
-    });
-  });
+export const handleVisualizeJobProgress = (message, addAssistantMessage) => {
+  console.log('Received job progress:', message);
 };
 
 export const handleTranslateToEnglishJobResult = (message, addAssistantMessage) => {
