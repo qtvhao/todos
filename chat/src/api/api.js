@@ -135,11 +135,11 @@ export const sendMessage = async (message) => {
   const db = await dbPromise;
   const tx = db.transaction('messages', 'readwrite');
   const store = tx.objectStore('messages');
-  const newMessage = { 
+  const newMessage = {
     text: message,
     sender: 'You',
-    threadId: id, 
-    timestamp: Date.now() 
+    threadId: id,
+    timestamp: Date.now()
   };
   await store.add(newMessage);
   await tx.done;
@@ -148,10 +148,34 @@ export const sendMessage = async (message) => {
 };
 
 export const addAssistantMessage = async (message) => {
- const db = await dbPromise;
+  const db = await dbPromise;
   const tx = db.transaction('messages', 'readwrite');
   const store = tx.objectStore('messages');
   await store.add(message);
-  await tx.done;  
+  await tx.done;
 }
+
+export const addVisualMessage = async (imageUrl, threadId) => {
+  console.log('Adding visual message:', imageUrl, threadId);
+  const db = await dbPromise;
+  const tx = db.transaction('messages', 'readwrite');
+  const store = tx.objectStore('messages');
+  const imageMarkdown = `![Visual](${imageUrl})`;
+  const newMessage = {
+    text: imageMarkdown,
+    sender: 'Visual',
+    threadId,
+    timestamp: Date.now()
+  };
+
+  const messages = await store.getAll();
+  const existingMessage = messages.find(m => m.sender === 'Visual' && m.threadId === threadId);
+  if (existingMessage) {
+    console.log('Updating existing visual message:', imageUrl, threadId);
+    await store.put(newMessage);
+  } else {
+    console.log('Adding new visual message:', imageUrl, threadId);
+    await store.add(newMessage);
+  }
+};
 

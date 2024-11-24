@@ -2,7 +2,7 @@
 import removeMd from 'remove-markdown';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useAuth } from './AuthContext';
-import { fetchMessages, addAssistantMessage, translateTokensToEnglish, alignTokens, visualizeMessages } from '../api/api';
+import { fetchMessages, addAssistantMessage, addVisualMessage, translateTokensToEnglish, alignTokens, visualizeMessages } from '../api/api';
 
 const MessageContext = createContext();
 
@@ -21,7 +21,9 @@ export const MessageProvider = ({ children }) => {
     setActiveThreadId(threadId);
   };
   const addVisualMessageFn = async (imageUrl, threadId) => {
-    console.log('Adding visual message:', imageUrl, threadId);
+    await addVisualMessage(imageUrl, threadId);
+    await doFetchMessages();
+    setActiveThreadId(threadId);
   };
   const addAssistantMessageFn = async (message) => {
     await addAssistantMessage(message);
