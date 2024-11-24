@@ -45,9 +45,12 @@ export class TodosService {
     this.logger.log('Todo:', todo);
     if (todo) {
       this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is ${progress}% ready!`);
-      let logs = await queue.getJobLogs(jobId);
+      let {
+        logs,
+        // count,
+      } = await queue.getJobLogs(jobId);
       this.logger.log('Logs:', logs);
-      let filteredLogs = logs.split('\n').filter((l: any) => l.startsWith('WS_EVENT_'));
+      let filteredLogs = logs.filter((l: any) => l.startsWith('WS_EVENT_'));
       this.notificationGateway.sendJobResult(todo.userId, {
         todo_id: todo.id,
         job_id: jobId,
