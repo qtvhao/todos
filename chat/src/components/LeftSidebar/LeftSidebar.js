@@ -13,7 +13,8 @@ const LeftSidebar = () => {
     const threadMap = {};
     messages.forEach((msg) => {
       if (!threadMap[msg.threadId]) {
-        threadMap[msg.threadId] = { id: msg.threadId, name: `Thread ${msg.threadId}` };
+        let threadId = msg.threadId || 'default';
+        threadMap[msg.threadId] = { id: threadId, name: `Thread ${msg.threadId}` };
       }
     });
     return Object.values(threadMap);
