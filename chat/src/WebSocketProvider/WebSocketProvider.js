@@ -4,12 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import { WS_URL, WS_ALIGN_TOKEN_URL, WS_TRANSLATE_TO_ENGLISH_URL, WS_VISUALIZE_MESSAGES_URL, } from '../constants';
 import { useMessages } from '../context/MessageContext';
 import { setupWebSocket } from '../WebSocketProvider/webSocketUtils'
-import { 
-  handleNotification, 
-  handleJobResult, 
-  handleAlignJobResult, 
-  handleTranslateToEnglishJobResult, 
-  handleDisconnect 
+import {
+  handleNotification,
+  handleJobResult,
+  handleAlignJobResult,
+  handleTranslateToEnglishJobResult,
+  handleVisualizeJobProgress,
+  handleDisconnect
 } from '../WebSocketProvider/webSocketHandlers';
 
 export const WebSocketContext = createContext(null);
@@ -40,9 +41,8 @@ const WebSocketProvider = ({ children }) => {
     if (auth) {
       const visualizeSocket = setupWebSocket(WS_VISUALIZE_MESSAGES_URL, auth.token, {
         notification: handleNotification,
-        // job_result: (message) => { handleJobResult(message, addAssistantMessage) },
         disconnect: handleDisconnect,
-        job_progress: (message) => { console.log(message) }
+        job_progress: (message) => { handleVisualizeJobProgress(message, addAssistantMessage) }
       });
 
       return () => {
@@ -50,7 +50,7 @@ const WebSocketProvider = ({ children }) => {
       }
     }
     // eslint-disable-next-line
-  }, [addAssistantMessage]);
+  }, [auth, addAssistantMessage]);
 
 
   useEffect(() => {
