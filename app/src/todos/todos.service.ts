@@ -25,8 +25,9 @@ export class TodosService {
           this.onCompleted(job, queue);
         });
       });
-      queue.on('global:progress', function (jobId: any, progress: any) {
+      queue.on('global:progress', (jobId: any, progress: any) => {
         console.log(`Job ${jobId} is ${progress * 100}% ready!`);
+        this.onProgress(jobId, progress);
       });
     });
     // this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
@@ -37,6 +38,20 @@ export class TodosService {
       this.logger.log('Processing job:', job.data);
       return { result: 'success' };
   }
+  onProgress(jobId: any, progress: any) {
+    this.logger.log(`Job ${jobId} is ${progress * 100}% ready!`);
+    this.logger.log(this.todos);
+    const todo = this.todos.find((t) => t.job_id === Number(jobId));
+    this.logger.log('Todo:', todo);
+    if (todo) {
+      this.notificationGateway.notifyUser(todo.userId, `Your todo "${todo.id}" is ${progress * 100}% ready!`);
+      this.notificationGateway.sendJobResult(todo.userId, {
+        todo_id: todo.id,
+        job_id: jobId,
+        progress: progress,
+      }, 'job_progress');
+    }    
+  } //
   onCompleted(job: Job, queue: Queue) {
       this.logger.log('Job completed ', job.id, 'from queue', queue.name);
       this.logger.log(this.todos);
