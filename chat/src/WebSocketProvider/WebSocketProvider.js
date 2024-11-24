@@ -1,7 +1,7 @@
 // src/WebSocketProvider.js
 import React, { createContext, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { WS_URL, WS_ALIGN_TOKEN_URL, WS_TRANSLATE_TO_ENGLISH_URL, } from '../constants';
+import { WS_URL, WS_ALIGN_TOKEN_URL, WS_TRANSLATE_TO_ENGLISH_URL, WS_VISUALIZE_MESSAGES_URL, } from '../constants';
 import { useMessages } from '../context/MessageContext';
 import { setupWebSocket } from '../WebSocketProvider/webSocketUtils'
 import { 
@@ -36,6 +36,22 @@ const WebSocketProvider = ({ children }) => {
     }
     // eslint-disable-next-line
   }, [auth]);
+  useEffect(() => {
+    if (auth) {
+      const visualizeSocket = setupWebSocket(WS_VISUALIZE_MESSAGES_URL, auth.token, {
+        notification: handleNotification,
+        // job_result: (message) => { handleJobResult(message, addAssistantMessage) },
+        disconnect: handleDisconnect,
+        job_progress: (message) => { console.log(message) }
+      });
+
+      return () => {
+        visualizeSocket.disconnect();
+      }
+    }
+    // eslint-disable-next-line
+  }, [addAssistantMessage]);
+
 
   useEffect(() => {
     if (auth) {
