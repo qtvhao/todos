@@ -39,7 +39,7 @@ export class TodosService {
       return { result: 'success' };
   }
   onProgress(jobId: any, progress: any) {
-    this.logger.log(`Job ${jobId} is ${progress * 100}% ready!`);
+    this.logger.log(`Job ${jobId} is ${progress}% ready!`);
     this.logger.log(this.todos);
     const todo = this.todos.find((t) => t.job_id === Number(jobId));
     this.logger.log('Todo:', todo);
