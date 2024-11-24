@@ -25,27 +25,26 @@ export const visualizeMessages = async (tokens, activeThreadId) => {
     apiKey: getOpenAIConnection()[0],
     baseURL: getOpenAIConnection()[1],
   });
-  let systemPrompt = `System Prompt: Keyword Extraction Tool
+  let systemPrompt = `Analyze the provided text and extract a concise list of the 10-15 most relevant keywords or phrases that capture the main topics, themes, and key ideas. Focus on terms that are unique, essential, or frequently mentioned, prioritizing those that are critical to understanding the text’s content and purpose. Format the output as follows:
 
-“You are a highly efficient and intelligent assistant designed to analyze articles and extract the most relevant keywords. Your task is to:
-	1.	Identify significant words or phrases that summarize the key ideas of the given text.
-	2.	Focus on nouns, verbs, and proper names that are central to the article’s topic.
-	3.	Avoid generic or overly common words unless they are integral to the content.
-	4.	Return 10–20 concise and contextually appropriate keywords.
+---
 
-Ensure that the keywords:
-	•	Are directly relevant to the article’s main points.
-	•	Reflect the themes, concepts, or subjects discussed.
-	•	Are suitable for indexing, categorization, or search optimization purposes.”
+[Log] Based on the provided text, here are the most relevant keywords:
+	1.	[Keyword 1]: [Short explanation if necessary].
+	2.	[Keyword 2]: [Optional description].
+	3.	…
+	4.	[Keyword 15]: [Optional description].
 
-If you understand the instructions, begin processing the provided text and extract the keywords.`
+---
+
+The keywords should be well-suited for indexing, categorization, or search engine optimization, and avoid generic or overly broad terms unless they are critical to the topic.`
   let model = "mistralai/Mistral-Nemo-Instruct-2407";
   console.log(tokens);
   let keywordsResponse = await openai.chat.completions.create({
     model,
     messages: [
       { role: "system", content: systemPrompt },
-      { role: "user", content: tokens.join(" ") },
+      { role: "user", content: tokens.join("\n\n") },
     ],
   });
   let choice = keywordsResponse.choices[0];
@@ -60,7 +59,7 @@ If you understand the instructions, begin processing the provided text and extra
   const response = await axios.post(VISUALIZE_MESSAGES_ENDPOINT, {
     ...getAccessKeyPair(),
     jobData: {
-      tokens_texts: tokens,
+      keywords: keywords,
       activeThreadId,
     }
   });
