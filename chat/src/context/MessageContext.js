@@ -52,7 +52,8 @@ export const MessageProvider = ({ children }) => {
   };
 
   const handleVisualizeMessages = async (tokens, activeThreadId) => {
-    await visualizeMessages(tokens, activeThreadId);
+    let flat = flatten(tokens);
+    await visualizeMessages(flat, activeThreadId);
   };
 
   const recursiveGetHeadings = (tokens) => {
