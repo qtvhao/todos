@@ -6,7 +6,22 @@ export const handleNotification = (message) => {
 };
 
 export const handleVisualizeJobProgress = (message, addAssistantMessage) => {
-  console.log('Received job progress:', message);
+  let parsed = JSON.parse(message)
+  console.log('Parsed:', parsed);
+  let logs = parsed.logs;
+  let logsObjects = logs.map((log) => {
+    let eventName = log.split(':')[0];
+    let eventData = JSON.parse(log.split(':')[1]);
+    return {
+      eventName,
+      eventData,
+    };
+  });
+  for (let log of logsObjects) {
+    let { eventName, eventData } = log;
+    console.log('Event name:', eventName);
+    console.log('Event data:', eventData);
+  }
 };
 
 export const handleTranslateToEnglishJobResult = (message, addAssistantMessage) => {
