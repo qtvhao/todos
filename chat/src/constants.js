@@ -14,3 +14,4 @@ export const WS_TRANSLATE_TO_ENGLISH_URL = `https://http-translate-to-english-pa
 
 export const VISUALIZE_MESSAGES_ENDPOINT = `https://http-ws-images-partnerapis-production-80.schnworks.com/todos`;
 export const WS_VISUALIZE_MESSAGES_URL = `https://http-ws-images-partnerapis-production-80.schnworks.com/`
+export const VISUALIZE_STATIC_URL = `https://http-ws-images-partnerapis-production-80.schnworks.com/static/`;

@@ -1,4 +1,4 @@
-import { STATIC_URL } from "../constants";
+import { STATIC_URL, VISUALIZE_STATIC_URL } from "../constants";
 import { ALIGN_TOKENS_ENDPOINT, TRANSLATE_TO_ENGLISH_ENDPOINT } from '../constants';
 
 export const handleNotification = (message) => {
@@ -11,16 +11,28 @@ export const handleVisualizeJobProgress = (message, addAssistantMessage) => {
   let logs = parsed.logs;
   let logsObjects = logs.map((log) => {
     let eventName = log.split(':')[0];
-    let eventData = JSON.parse(log.split(':')[1]);
+    let eventData = log.substring(eventName.length + 1);
     return {
       eventName,
-      eventData,
+      eventData: JSON.parse(eventData),
     };
   });
   for (let log of logsObjects) {
     let { eventName, eventData } = log;
     console.log('Event name:', eventName);
-    console.log('Event data:', eventData);
+    // console.log('Event data:', eventData);
+    let {
+      threadId,
+      filePath,
+    } = eventData;
+    // 
+    console.log('Thread ID:', threadId);
+    // console.log('File path:', filePath);
+    let filePaths = filePath.split('/');
+    let basename = filePaths.pop();
+    let folderName = filePaths.pop();
+    let imageUrl = `${VISUALIZE_STATIC_URL}${folderName}/${basename}`;
+    console.log('Image URL:', imageUrl);
   }
 };
 
