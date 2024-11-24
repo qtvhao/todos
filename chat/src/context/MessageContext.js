@@ -20,6 +20,9 @@ export const MessageProvider = ({ children }) => {
   const changeThread = (threadId) => {
     setActiveThreadId(threadId);
   };
+  const addVisualMessageFn = async (imageUrl, threadId) => {
+    console.log('Adding visual message:', imageUrl, threadId);
+  };
   const addAssistantMessageFn = async (message) => {
     await addAssistantMessage(message);
     await doFetchMessages();
@@ -121,7 +124,7 @@ export const MessageProvider = ({ children }) => {
 
   return (
     <MessageContext.Provider
-      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn, handleTranslateTokensToEnglish, handleAlignTokens, handleVisualizeMessages }}
+      value={{ messages: messages, setMessages, activeThreadId, changeThread, doFetchMessages, addAssistantMessage: addAssistantMessageFn, addVisualMessage: addVisualMessageFn, handleTranslateTokensToEnglish, handleAlignTokens, handleVisualizeMessages }}
     >
       {children}
     </MessageContext.Provider>

@@ -22,6 +22,7 @@ const WebSocketProvider = ({ children }) => {
 
   const { 
     addAssistantMessage,
+    addVisualMessage,
   } = useMessages();
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const WebSocketProvider = ({ children }) => {
       const visualizeSocket = setupWebSocket(WS_VISUALIZE_MESSAGES_URL, auth.token, {
         // notification: handleNotification,
         disconnect: handleDisconnect,
-        job_progress: (message) => { handleVisualizeJobProgress(message, addAssistantMessage) }
+        job_progress: (message) => { handleVisualizeJobProgress(message, addVisualMessage) }
       });
 
       return () => {
@@ -50,7 +51,7 @@ const WebSocketProvider = ({ children }) => {
       }
     }
     // eslint-disable-next-line
-  }, [auth, addAssistantMessage]);
+  }, [auth, addVisualMessage]);
 
 
   useEffect(() => {

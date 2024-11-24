@@ -5,7 +5,7 @@ export const handleNotification = (message) => {
   console.log('Received notification:', message);
 };
 
-export const handleVisualizeJobProgress = (message, addAssistantMessage) => {
+export const handleVisualizeJobProgress = (message, addVisualMessage) => {
   let parsed = JSON.parse(message)
   console.log('Parsed:', parsed);
   let logs = parsed.logs;
@@ -20,19 +20,15 @@ export const handleVisualizeJobProgress = (message, addAssistantMessage) => {
   for (let log of logsObjects) {
     let { eventName, eventData } = log;
     console.log('Event name:', eventName);
-    // console.log('Event data:', eventData);
     let {
       threadId,
       filePath,
     } = eventData;
-    // 
-    console.log('Thread ID:', threadId);
-    // console.log('File path:', filePath);
     let filePaths = filePath.split('/');
     let basename = filePaths.pop();
     let folderName = filePaths.pop();
     let imageUrl = `${VISUALIZE_STATIC_URL}${folderName}/${basename}`;
-    console.log('Image URL:', imageUrl);
+    addVisualMessage(imageUrl, threadId);
   }
 };
 
