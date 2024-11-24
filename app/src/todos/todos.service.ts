@@ -25,6 +25,9 @@ export class TodosService {
           this.onCompleted(job, queue);
         });
       });
+      queue.on('global:progress', function (jobId: any, progress: any) {
+        console.log(`Job ${jobId} is ${progress * 100}% ready!`);
+      });
     });
     // this.queues.forEach((queue) => { queue.process((job) => this.process(job)); });
     this.logger.log('QueueProcessor initialized with queues:', this.queues.map((q) => q.name));
