@@ -110,7 +110,11 @@ function getOpenAIConnection() {
 
   if (!key) {
     // prompt user to enter key
-    key = prompt('Please enter your OpenAI API key');
+    key = prompt('Please enter your DeepInfra API key');
+    if (!key) {
+      window.alert('API key is required. Get your API key at https://deepinfra.com');
+      throw new Error('API key is required');
+    }
     Cookies.set('OPENAI_API_KEY', key);
   }
 
