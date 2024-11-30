@@ -112,7 +112,7 @@ function getOpenAIConnection() {
     // prompt user to enter key
     key = prompt('Please enter your DeepInfra API key');
     if (!key) {
-      window.alert('API key is required. Get your API key at https://deepinfra.com');
+      alert('API key is required. Get your API key at https://deepinfra.com');
       throw new Error('API key is required');
     }
     Cookies.set('OPENAI_API_KEY', key);
@@ -175,10 +175,27 @@ export const addVisualMessage = async (imageUrl, threadId) => {
   };
 
   const messages = await store.getAll();
-  const existingMessage = messages.find(m => m.sender === 'Visual' && m.threadId === threadId);
+  const existingMessage = messages.find(m => {
+    let isSameThread = m.threadId === threadId;
+    if (!isSameThread) {
+      return false;
+    }
+
+    let isVisual = m.sender === 'Visual';
+    if (!isVisual) {
+      return false;
+    }
+    
+    let isSameText = m.text === imageMarkdown;
+
+    return isSameText;
+  });
   if (existingMessage) {
-    console.log('Updating existing visual message:', imageUrl, threadId);
-    await store.put(newMessage);
+    console.log('Updating existing visual message:', imageUrl, threadId, existingMessage);
+    await store.put({
+      id: existingMessage.id,
+      ...newMessage,
+    });
   } else {
     console.log('Adding new visual message:', imageUrl, threadId);
     await store.add(newMessage);
