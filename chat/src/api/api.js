@@ -160,7 +160,9 @@ export const addVisualMessage = async (imageUrl, threadId) => {
   const db = await dbPromise;
   const tx = db.transaction('messages', 'readwrite');
   const store = tx.objectStore('messages');
-  const imageMarkdown = `![Visual](${imageUrl})`;
+  const imageMarkdown = `${imageUrl}
+`;
+  // const imageMarkdown = `![Visual](${imageUrl})`;
   const newMessage = {
     text: imageMarkdown,
     sender: 'Visual',
